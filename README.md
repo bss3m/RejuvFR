@@ -52,6 +52,12 @@ Delete `patch/messages_fr.dat` and `patch/Init/french_translation.rb`. Nothing e
 
 Free for personal, non commercial use. Please do not resell. Respect the work of Jan and the Rejuvenation team.
 
+## Contributing
+
+The translation sources live in `src/fr/` (one JSON per map, plus one JSON per game section). Anyone can fork the repo, fix a line, open a pull request. See [CONTRIBUTING.md](CONTRIBUTING.md) for the rules (no key changes, preserve engine codes, banned characters, etc.).
+
+Les sources de traduction sont dans `src/fr/`. N'importe qui peut fork le depot, corriger une ligne, ouvrir une pull request. Regles dans [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Feedback
 
-Open an issue on this repository.
+Open an issue on this repository. / Ouvre une issue sur ce depot.

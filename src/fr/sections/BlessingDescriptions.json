@@ -1,0 +1,16 @@
+{
+ "Boosts the power of @type@ moves by @amount*100@%.": "Augmente la puissance des capacités de type @type@ de @amount*100@ %.",
+ "@type@ moves have a @statusChance*100@% chance to inflict @status@.": "Les capacités de type @type@ ont @statusChance*100@ % de chances d'infliger @status@.",
+ "Gradually restore @healAmount*100@% HP every @turns@ turn(s).": "Restaure progressivement @healAmount*100@ % des PV tous les @turns@ tour(s).",
+ "Gain a @boostChance*100@% chance of raising @stats@ when a Pokémon enters a battle.": "Gagne @boostChance*100@ % de chances d'augmenter @stats@ lorsqu'un Pokémon entre au combat.",
+ "Gain a @boostChance*100@% chance of raising @stats@ when a Pokémon enters a battle. Additionally, gain a @bonusChance*100@% chance to increase @stats@ every turn.": "Gagne @boostChance*100@ % de chances d'augmenter @stats@ lorsqu'un Pokémon entre au combat. De plus, gagne @bonusChance*100@ % de chances d'augmenter @stats@ à chaque tour.",
+ "@type@ moves gain +@bonusCrit@ critical-hit ratio.": "Les capacités de type @type@ gagnent +@bonusCrit@ au taux de coup critique.",
+ "All @type@ moves have a @statusChance*100@% chance to inflict @status@.": "Toutes les capacités de type @type@ ont @statusChance*100@ % de chances d'infliger @status@.",
+ "Opponents that flinch take @damage*100@% max HP damage.": "Les adversaires qui appréhendent subissent @damage*100@ % des PV max en dégâts.",
+ "Gain a @boostChance*100@% chance of raising @stats@ when a Pokémon enters a battle. Gain a @bonusChance*100@% chance to instead raise @stats@ to @bonusBoost@.": "Gagne @boostChance*100@ % de chances d'augmenter @stats@ lorsqu'un Pokémon entre au combat. Gagne @bonusChance*100@ % de chances d'augmenter @stats@ à @bonusBoost@ à la place.",
+ "All moves have a @statusChance*100@% chance to apply a @status@, dealing @damage*100@% max Health every turn.": "Toutes les capacités ont @statusChance*100@ % de chances d'appliquer @status@, infligeant @damage*100@ % des PV max à chaque tour.",
+ "All moves have a @statusChance*100@% chance to inflict @status@.": "Toutes les capacités ont @statusChance*100@ % de chances d'infliger @status@.",
+ "All moves have a @statusChance*100@% chance to inflict @status@. Enemies also gain an additional @hitBonus*100@% chance to hit themselves in Confusion.": "Toutes les capacités ont @statusChance*100@ % de chances d'infliger @status@. Les ennemis ont aussi @hitBonus*100@ % de chances supplémentaires de se blesser eux-mêmes en Confusion.",
+ "All moves have a @hitChance*100@% chance to strike again at @damageReduction*100@% damage.": "Toutes les capacités ont @hitChance*100@ % de chances de frapper à nouveau avec @damageReduction*100@ % de dégâts.",
+ "All moves have a @hitChance*100@% chance to strike again at @damageReduction*100@% damage. Gain an additional @bonusProcChance*100@% chance to strike @bonusProcHits@ more time(s).": "Toutes les capacités ont @hitChance*100@ % de chances de frapper à nouveau avec @damageReduction*100@ % de dégâts. Gagne @bonusProcChance*100@ % de chances supplémentaires de frapper @bonusProcHits@ fois de plus."
+}

@@ -1,0 +1,23 @@
+{
+ "Normal": "Normal",
+ "Fighting": "Combat",
+ "Flying": "Vol",
+ "Poison": "Poison",
+ "Ground": "Sol",
+ "Rock": "Pierre",
+ "Bug": "Insecte",
+ "Ghost": "Spectre",
+ "Steel": "Acier",
+ "???": "???",
+ "Fire": "Feu",
+ "Water": "Eau",
+ "Grass": "Plante",
+ "Electric": "Electrik",
+ "Psychic": "Psy",
+ "Ice": "Glace",
+ "Dragon": "Dragon",
+ "Dark": "Tenebres",
+ "Fairy": "Fee",
+ "Shadow": "Ombre",
+ "Stellar": "Stellaire"
+}
