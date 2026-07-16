@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.8 (2026-07-16)
+
+* Fix: Mewtwo boss battle messages "Mewtwo is charging its attack...", "Shadow Mewtwo's power grows!" and "Mewtwo's Mega power was exhausted..." are now translated. These are hardcoded in `bosstext*.rb` under `chargingMessage` / `fieldChangeMessage` keys.
+* Fix: a new mod script `patch/Mods/french_battle_messages.rb` overrides `setField` and `pbDisplayAutoPaused` to route hardcoded battle messages through `_INTL`, so future untranslated boss break messages (Archetype messages, field change texts) will also pick up their FR variants.
+
 ## v1.0.7 (2026-07-16)
 
 * Fix: two variants of the dramatic Nymiera line "Defeat is not an option. Bathe yourself in our light." are now translated. They were skipped by the automated pass because of dense engine formatting codes.
