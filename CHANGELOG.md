@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2 (2026-07-16)
+
+* Fix: participles after auxiliaries etre/avoir get their accent back ("je suis alle" becomes "je suis alle(e)", "j'ai trouve" becomes "j'ai trouve", "je suis devenu" becomes "je suis devenu(e)"). About 570 lines were touched.
+* Fix: "bien sur" becomes "bien sur" (adverb), "pas sur" at the end of a sentence becomes "pas sur(e)" (adjective needing agreement).
+* Fix: "hesiter" and its variants ("hesite", "hesitons"...) get their accent.
+
 ## v1.0.1 (2026-07-16)
 
 * Compatible with Rejuvenation 14.0.2.
