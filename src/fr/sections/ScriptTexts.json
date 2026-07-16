@@ -4310,5 +4310,6 @@
  "The grassy patch remained quiet...": "La zone herbeuse est restée silencieuse...",
  "D (hold):   Quick Save": "D (maintenu) :   Sauvegarde Rapide",
  "RS:   Field Notes": "RS :   Notes de Terrain",
- "Z:   Learn Moves": "Z :   Apprendre Capacités"
+ "Z:   Learn Moves": "Z :   Apprendre Capacités",
+ "\\se[{1}]<ac><c2=#{colorQuest(\"red\")}>New quest discovered!</c2>\nCheck your quest log for more details!</ac>": "\\se[{1}]<ac><c2=#{colorQuest(\"red\")}>Nouvelle quête découverte !</c2>\nConsulte ton journal des quêtes pour plus de détails !</ac>"
 }
