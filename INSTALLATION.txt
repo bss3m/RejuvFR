@@ -1,0 +1,9 @@
+INSTALLATION (30 seconds)
+
+1. Download RejuvenationFR-1.0.zip from the Releases page.
+2. Extract it at the root of your game folder (where Rejuvenation.exe lives).
+   The "patch" folder from the zip merges with the existing one.
+3. Launch Rejuvenation.exe.
+4. Main menu -> Language -> Français.
+
+Switch back to English anytime via Language -> English. Saves are safe.
