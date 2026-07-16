@@ -19,13 +19,13 @@
  "GRUNT: Hey, it looks like that worked!": "GRUNT: Hé, on dirait que ça a marché !",
  "My mother's grave should be really close by! Thank you!": "La tombe de ma mère doit être vraiment toute proche ! Merci !",
  "Insufficient power supply.": "Alimentation électrique insuffisante.",
- "GRUNT: This thing just won't cooperate. There's no use...": "GRUNT: Ce truc refuse de coopérer.C'est inutile...",
+ "GRUNT: This thing just won't cooperate. There's no use...": "GRUNT: Ce truc refuse de coopérer. C'est inutile...",
  "GRUNT: Oh great...\\| It's you. \\PN. We haven't met before, but you're well known amongst us grunts...": "GRUNT: Oh, super...\\| C'est toi.\\PN.On ne s'est jamais rencontré(e)s, mais tu es bien connu(e) parmi nous, les Grunts...",
- "Well, I guess I'm technically not a Grunt. I've been fired for something I didn't do.": "Enfin, je ne suis techniquement plus un Grunt.J'ai été viré pour quelque chose que je n'ai pas fait.",
+ "Well, I guess I'm technically not a Grunt. I've been fired for something I didn't do.": "Enfin, je ne suis techniquement plus un Grunt. J'ai été viré pour quelque chose que je n'ai pas fait.",
  "Something about deleting Nastasia's hard drive and ruining a really important project...": "Quelque chose à propos de l'effacement du disque dur de Nastasia et de la destruction d'un projet vraiment important...",
  "I wanted to see my mother's grave before...\\| \\c[6]It happens...": "Je voulais voir la tombe de ma mère avant...\\| \\c[6]Ça arrive...",
  "But the layout of this place has changed drastically since I was here last.": "Mais la configuration de cet endroit a radicalement changé depuis ma dernière visite.",
- "Made it all this way and ran into this grid. It won't let me through without the right amount of power.": "J'ai réussi à venir jusqu'ici et je me suis retrouvé bloqué par cette grille.Elle ne me laisse pas passer sans la bonne quantité d'énergie.",
+ "Made it all this way and ran into this grid. It won't let me through without the right amount of power.": "J'ai réussi à venir jusqu'ici et je me suis retrouvé bloqué par cette grille. Elle ne me laisse pas passer sans la bonne quantité d'énergie.",
  "Here, why don't you take a look? Maybe you can manage more than me.": "Tiens, pourquoi tu ne regardes pas ?Peut-être que tu peux faire mieux que moi.",
  "REGISTEEL: Rwworup...": "REGISTEEL: Rwworup...",
  "REGISTEEL: Rwworup!": "REGISTEEL: Rwworup !",
@@ -65,7 +65,7 @@
  "It's... Madame X? It looks like her at least.": "C'est... Madame X ? On dirait elle en tout cas.",
  "It's a pile of armor. It looks identical to Madame X's.": "C'est un tas d'armure. Il paraît identique à celui de Madame X.",
  "GRUNT: This suit definitely resembles Madame X, but...": "GRUNT: Cette combinaison ressemble vraiment à celle de Madame X, mais...",
- "Ah, that's it. It's missing murderous intent. Yes, that must be why it's so off putting!": "Ah, voilà.Il lui manque l'envie de tuer.Oui, c'est sûrement pour ça qu'elle est si repoussante !",
+ "Ah, that's it. It's missing murderous intent. Yes, that must be why it's so off putting!": "Ah, voilà. Il lui manque l'envie de tuer. Oui, c'est sûrement pour ça qu'elle est si repoussante !",
  "GRUNT: Wh-Whoa?! What was that quake?\\|": "GRUNT: C-C'est quoi ce tremblement ?!\\|",
  "GRUNT: Yes...\\| Nature... It's always nature's fault.": "GRUNT: Oui...\\| La nature...C'est toujours la faute de la nature.",
  "I will never forgive nature for what it did to me and my lack of family!": "Je ne pardonnerai jamais à la nature ce qu'elle m'a fait, à moi et à ma famille absente !",
@@ -89,5 +89,5 @@
  "Nature.": "La nature.",
  "Who knows?": "Qui sait ?",
  "Sorry that was me.": "Désolé(e), c'était moi.",
- "GRUNT: Sigh, I'm talking to a brick wall. In short, I got fired, ran away, and now I'm here.": "SBIRE: Pff, je parle à un mur.Bref, je me suis fait virer, j'ai pris la fuite, et maintenant je suis là."
+ "GRUNT: Sigh, I'm talking to a brick wall. In short, I got fired, ran away, and now I'm here.": "SBIRE: Pff, je parle à un mur. Bref, je me suis fait virer, j'ai pris la fuite, et maintenant je suis là."
 }

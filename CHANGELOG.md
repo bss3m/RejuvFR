@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.9 (2026-07-16)
+
+* Fix: **6864 dialogues re-espacés** — la ponctuation `.?!` collée à une majuscule sans espace (par exemple « atterri?À l'intérieur ») a été corrigée dans tous les dialogues. C'était un artefact du pipeline de traduction qui concaténait deux commandes de texte sans conserver l'espace attendu. Le jeu affiche maintenant proprement les blocs de dialogue construits sur plusieurs commandes.
+
 ## v1.0.8 (2026-07-16)
 
 * Fix: Mewtwo boss battle messages "Mewtwo is charging its attack...", "Shadow Mewtwo's power grows!" and "Mewtwo's Mega power was exhausted..." are now translated. These are hardcoded in `bosstext*.rb` under `chargingMessage` / `fieldChangeMessage` keys.
