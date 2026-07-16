@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.3 (2026-07-16)
+
+* Fix: gender agreement resolved for NPC dialogues that had no speaker prefix. Sprite images are now cross referenced with the map data to know each speaker's gender, and the "je suis alle(e)" and "pas sur(e)" patterns are collapsed to the right form (fem or masc) for around 350 previously ambiguous lines.
+* The remaining (e) inclusive forms are the ones that address the player (unknown gender), which is intentional.
+
 ## v1.0.2 (2026-07-16)
 
 * Fix: participles after auxiliaries etre/avoir get their accent back ("je suis alle" becomes "je suis alle(e)", "j'ai trouve" becomes "j'ai trouve", "je suis devenu" becomes "je suis devenu(e)"). About 570 lines were touched.
