@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.7 (2026-07-16)
+
+* Fix: two variants of the dramatic Nymiera line "Defeat is not an option. Bathe yourself in our light." are now translated. They were skipped by the automated pass because of dense engine formatting codes.
+
 ## v1.0.6 (2026-07-16)
 
 * Fix: three more hardcoded quest messages are now translated: "Quest completed!", "Quest failed!", "New task added!". Same mechanism as v1.0.4 (New quest discovered!): the strings are hardcoded in `Scripts/Rejuv/Quest/Quest.rb` and routed through `_INTL`, so adding the FR variants to `messages_fr.dat` is enough.
