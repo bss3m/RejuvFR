@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.11 (2026-07-17)
+
+* Fix: 858 dialogues avaient un point non suivi d'un espace ("phrase.Autre" au lieu de "phrase. Autre"). Corrige automatiquement, en preservant les abreviations legitimes (Sp., Def.Spe, Att., N.5, etc.) et les balises engine (\PN., \v[X]).
+
 ## v1.0.10 (2026-07-17)
 
 * Fix: 760 dialogues supplementaires (bosstext, trainertext, story trainers, meta) sont maintenant traduits. Ils venaient de `Scripts/Rejuv/Definitions/*.rb` et passaient par `pbGetMessageFromHash` ou par le hook `french_battle_messages.rb`, donc pas besoin d'un nouveau patch Ruby : ajouter les entrees a `messages_fr.dat` suffit.
