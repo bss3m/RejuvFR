@@ -16,7 +16,7 @@
   "KARRINA: That Xen Admin must be around here somewhere.": "KARRINA: Cet Admin Xen doit être quelque part par ici.",
   "REN: Yeah, that laugh sounded pretty close.": "REN: Ouais, ce rire semblait assez proche.",
   "REN: Venam!": "REN: Venam !",
-  "VENAM: Huh?! What are you guys doing here?": "VENAM: Hein ?!Qu'est-ce que vous faites là ?",
+  "VENAM: Huh?! What are you guys doing here?": "VENAM: Hein ?! Qu'est-ce que vous faites là ?",
   "KARRINA: It wasn't wise for you to run off like that before giving me the chance to explain the situation!": "KARRINA: Ce n'était pas sage de ta part de filer comme ça avant que j'aie la chance d'expliquer la situation !",
   "VENAM: Listen, I'm-": "VENAM: Écoute, je-",
   "\\c[2]*INTRUDER ALERT!* *INTRUDER ALERT!*": "\\c[2]*ALERTE INTRUSION !* *ALERTE INTRUSION !*",
@@ -27,7 +27,7 @@
   "???: You're supposed to be more competent than this!": "???: Tu es censé être plus compétent que ça !",
   "Whatever, just take care of them. I'm warping out of here!": "Peu importe, occupe-toi d'eux. Je me téléporte hors d'ici !",
   "VENAM: Is... that a Musharna?": "VENAM: C'est...un Musharna ?",
-  "KARRINA: You there, Xen Admin! What are you doing with that Musharna?!": "KARRINA: Toi là, Admin Xen !Qu'est-ce que tu fais avec ce Musharna ?!",
+  "KARRINA: You there, Xen Admin! What are you doing with that Musharna?!": "KARRINA: Toi là, Admin Xen ! Qu'est-ce que tu fais avec ce Musharna ?!",
   "DRJENKEL: Huheuheuh... Xen Admin? Welp. Doesn't matter. You've all seen too much!": "DRJENKEL: Huheuheuh... Admin Xen ? Bah. Peu importe. Vous en avez trop vu !",
   "But that's okay, huheuhe... YES! It's QUITE. ALL. RIGHT.": "Mais c'est bon, huheuhe... OUI ! C'est TOUT. À. FAIT. CORRECT.",
   "I guess I'll just have to test my experiment out on you two. O - O.": "Je suppose que je vais juste devoir tester mon expérience sur vous deux. O - O.",
@@ -41,7 +41,7 @@
   "VENAM: Yeah, sure.": "VENAM: Ouais, d'accord.",
   "MUSHARNA: Moo shar na!": "MUSHARNA: Moo shar na !",
   "KARRINA: That Musharna is... angry with us?": "KARRINA: Ce Musharna est...en colère contre nous ?",
-  "REN: Why is it angry with us? I thought we saved it from being in pain?": "REN: Pourquoi est-il en colère contre nous ?Je croyais qu'on l'avait sauvé de la douleur ?",
+  "REN: Why is it angry with us? I thought we saved it from being in pain?": "REN: Pourquoi est-il en colère contre nous ? Je croyais qu'on l'avait sauvé de la douleur ?",
   "DRJENKEL: Huehueueh... Well of course not!": "DRJENKEL: Huehueueh... Bien sûr que non !",
   "My modifications to this machine cause the two to sort of have a symbiotic relationship!": "Mes modifications sur cette machine font que les deux ont en quelque sorte une relation symbiotique !",
   "This Musharna was never in any harm. It was enjoying a nice massage, probably.": "Ce Musharna n'était jamais en danger. Il profitait probablement d'un bon massage.",
@@ -63,5 +63,5 @@
   "KAREN: <fn=Garufan> ! Trowen Ma' Acneeth !</fn>": "KAREN: <fn=Garufan> ! Trowen Ma' Acneeth !</fn>",
   "KAREN: Boy! I do feel better! \\PN, meet me at the next designated location.": "KAREN: Ouah ! Je me sens vraiment mieux ! \\PN, retrouve-moi au prochain lieu convenu.",
   "Purify a Pokémon?": "Purifier un Pokémon ? ",
-  "KARRINA: Oh. So you're actually helping Pokémon out? Not harming them?": "KARRINA: Oh. Alors tu aides vraiment les Pokémon ?Tu ne leur fais pas de mal ?"
+  "KARRINA: Oh. So you're actually helping Pokémon out? Not harming them?": "KARRINA: Oh. Alors tu aides vraiment les Pokémon ? Tu ne leur fais pas de mal ?"
 }

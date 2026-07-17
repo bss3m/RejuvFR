@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.12 (2026-07-17)
+
+* Fix: 7880 dialogues avaient un point d'interrogation ou d'exclamation directement suivi d'une lettre, sans espace ("Vraiment ?Tu es..." au lieu de "Vraiment ? Tu es..."). Meme mecanisme de correction que v1.0.11 mais applique a `?` et `!`.
+
 ## v1.0.11 (2026-07-17)
 
 * Fix: 858 dialogues avaient un point non suivi d'un espace ("phrase.Autre" au lieu de "phrase. Autre"). Corrige automatiquement, en preservant les abreviations legitimes (Sp., Def.Spe, Att., N.5, etc.) et les balises engine (\PN., \v[X]).
