@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.10 (2026-07-17)
+
+* Fix: 760 dialogues supplementaires (bosstext, trainertext, story trainers, meta) sont maintenant traduits. Ils venaient de `Scripts/Rejuv/Definitions/*.rb` et passaient par `pbGetMessageFromHash` ou par le hook `french_battle_messages.rb`, donc pas besoin d'un nouveau patch Ruby : ajouter les entrees a `messages_fr.dat` suffit.
+* Fix: le typo "perdue" (au lieu de "perdu") apparaissait 290 fois dans les dialogues (bug residuel du script d'accentuation qui traitait le verbe "perdre" comme un verbe -er). Tout est corrige.
+* Types de textes touches : Ace speeches (20), Defeat speeches (238), Field/Boss messages (314), Script texts divers (188).
+
 ## v1.0.9 (2026-07-16)
 
 * Fix: **6864 dialogues re-espacés** — la ponctuation `.?!` collée à une majuscule sans espace (par exemple « atterri?À l'intérieur ») a été corrigée dans tous les dialogues. C'était un artefact du pipeline de traduction qui concaténait deux commandes de texte sans conserver l'espace attendu. Le jeu affiche maintenant proprement les blocs de dialogue construits sur plusieurs commandes.
