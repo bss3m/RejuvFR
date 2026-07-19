@@ -4,7 +4,7 @@ Traduction française non-officielle de **Pokémon Rejuvenation 14.0.6**.
 
 ## Téléchargement
 
-Dernière version : [**RejuvFR_v1.1.4.zip**](https://github.com/bss3m/RejuvFR/releases/latest) (~6 Mo)
+Dernière version : [**RejuvFR_v1.1.5.zip**](https://github.com/bss3m/RejuvFR/releases/latest) (~6 Mo)
 
 ## Installation
 
@@ -55,6 +55,7 @@ Supprime le fichier `patch/messages_fr.dat`, les scripts `Init/french_*.rb` et l
 Merci aux personnes qui ont contribué en signalant des erreurs, en proposant des corrections ou en fournissant du contenu :
 
 * **Lavril** — retours détaillés sur de nombreuses lignes de dialogue, ponctuation, et cas de genre non résolus.
+* **Tench** — signalement des descriptions d'items trop longues qui débordaient de la boîte d'affichage.
 
 Tu veux apparaître ici ? Ouvre une issue ou une PR sur ce dépôt.
 

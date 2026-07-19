@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.5 (2026-07-19)
+
+Descriptions d'objets raccourcies pour tenir en 3 lignes maximum :
+
+* Environ **95 descriptions d'items** qui débordaient de la boîte d'affichage sont raccourcies sans perdre le sens : Clé USB mystérieuse, Brindille-Miroir, Ceinture Poké Balls, tous les Joyaux de type (Feu, Eau, Électrik...), toutes les Méga-Gemmes, et une trentaine d'autres.
+* Cible : `ItemDescriptions.json` et `08_ItemDescriptions.json` — les deux fichiers utilisés par le jeu pour l'affichage des objets. La règle de longueur est ≤ 130 caractères (validée en jeu).
+
+Merci à **Tench** pour le signalement.
+
 ## v1.1.4 (2026-07-19)
 
 Correctif critique sur l'updater in-game :
