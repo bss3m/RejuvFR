@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.3 (2026-07-19)
+
+Reecriture complete de l'updater pour reellement fonctionner.
+
+* Fix : l'updater v1.1.2 pouvait telecharger et extraire, mais n'ecrasait pas `messages_fr.dat` a cause du lock Windows tenu par mkxp-z sur ce fichier pendant l'execution.
+* Solution : extraction dans un dossier de staging temporaire `.rejuvfr_update/`, puis spawn d'un script `.rejuvfr_apply.bat` detache qui attend 3 secondes que le jeu se ferme, deplace les fichiers via `robocopy` (comme le fait l'Updater officiel de Rejuvenation pour la mise a jour du moteur), puis se supprime.
+* Fix : le spawn detache utilise maintenant `cmd.exe /c` avec chemins absolus pour ne pas dependre du repertoire de travail.
+* Ce flow a ete teste en local en simulant le lock Windows et fonctionne bout a bout : detection, download avec redirection HTTPS -> CDN, extraction, application, redemarrage automatique via `exit!`.
+
 ## v1.1.2 (2026-07-19)
 
 Correctifs sur l'updater in-game :

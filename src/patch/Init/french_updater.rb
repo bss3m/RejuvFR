@@ -1,25 +1,29 @@
 # Verificateur + telechargeur de mise a jour pour RejuvFR.
 #
 # Au chargement d'une partie, on interroge l'API GitHub Releases. Si une
-# version plus recente est disponible, on propose au joueur de la telecharger
-# et de l'appliquer directement, puis on redemarre.
+# version plus recente est disponible, on propose au joueur de la telecharger,
+# on extrait dans un dossier temporaire .rejuvfr_update/, on spawn un script
+# batch detache qui va deplacer les fichiers apres l'arret du jeu, puis on
+# quitte proprement.
 #
-# Aucune ecriture n'est faite tant que l'utilisateur n'a pas accepte. Toute
-# erreur reseau ou API est silencieuse : le mod se contente de ne rien
-# afficher. Une trace debug peut etre laissee dans patch/.rejuvfr_updater.log.
+# Cette architecture (extraction en dossier temp + batch detache) evite les
+# locks Windows qui empechent d'ecraser messages_fr.dat pendant l'execution.
+# C'est le meme pattern que l'Updater officiel de Rejuvenation.
 
-REJUVFR_VERSION = "1.1.2"
+REJUVFR_VERSION = "1.1.3"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_CACHE_PATH = "patch/.rejuvfr_update_check"
 REJUVFR_LOG_PATH = "patch/.rejuvfr_updater.log"
 REJUVFR_ZIP_TMP = "patch/.rejuvfr_download.zip"
+REJUVFR_STAGING_DIR = ".rejuvfr_update"
+REJUVFR_APPLY_BAT = ".rejuvfr_apply.bat"
 
 $rejuvfr_update_info = nil
 
 def rejuvfr_log(msg)
-  File.open(REJUVFR_LOG_PATH, "a") { |f| f.puts "[RejuvFR] #{msg}" }
+  File.open(REJUVFR_LOG_PATH, "a") { |f| f.puts "[RejuvFR #{Time.now}] #{msg}" }
 rescue
 end
 
@@ -77,75 +81,138 @@ Thread.new do
   end
 end
 
-# --- Telechargement ---
-# Reimplemente en pilotant Net::HTTP.start / redirections manuellement, sans
-# reutiliser une connexion inter-hosts (source du NoMethodError en v1.1.1).
+# --- Telechargement (redirections par recursion) ---
 
 def rejuvfr_fetch(url, dest_path, redirects_left = 5)
   require 'net/http'
   require 'uri'
   uri = URI.parse(url)
   return false unless uri.host
+  result = false
   Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
     http.open_timeout = 10
-    http.read_timeout = 120
+    http.read_timeout = 180
     req = Net::HTTP::Get.new(uri.request_uri)
     req["User-Agent"] = "RejuvFR/#{REJUVFR_VERSION}"
     res = http.request(req)
     case res
     when Net::HTTPRedirection
-      return false if redirects_left <= 0
-      loc = res['location']
-      return false if loc.nil? || loc.empty?
-      # Si location relative -> resoudre par rapport a l'uri courante
-      new_url = loc.start_with?('http') ? loc : URI.join(url, loc).to_s
-      return rejuvfr_fetch(new_url, dest_path, redirects_left - 1)
+      if redirects_left > 0
+        loc = res['location']
+        unless loc.nil? || loc.empty?
+          new_url = loc.start_with?('http') ? loc : URI.join(url, loc).to_s
+          # On sort du bloc puis on rappelle recursivement (evite les ennuis
+          # de reutilisation de la session Net::HTTP inter-hosts).
+          result = :redirect
+          $rejuvfr_next_url = new_url
+        end
+      else
+        rejuvfr_log("Too many redirects on #{url}")
+      end
     when Net::HTTPSuccess
       File.open(dest_path, 'wb') { |f| f.write(res.body) }
-      return true
+      result = true
     else
       rejuvfr_log("HTTP #{res.code} on #{url}")
-      return false
     end
   end
+  if result == :redirect
+    next_url = $rejuvfr_next_url
+    $rejuvfr_next_url = nil
+    return rejuvfr_fetch(next_url, dest_path, redirects_left - 1)
+  end
+  result == true
 rescue => e
   rejuvfr_log("Fetch failed: #{e.class}: #{e.message}")
   false
 end
 
-def rejuvfr_apply_zip(zip_path)
+# --- Extraction dans un dossier de staging ---
+
+def rejuvfr_extract_to_staging(zip_path, staging_dir)
   require 'zip'
   require 'fileutils'
+  FileUtils.rm_rf(staging_dir) if File.exist?(staging_dir)
+  FileUtils.mkdir_p(staging_dir)
   Zip::File.open(zip_path) do |zf|
     zf.each do |entry|
       name = entry.name.to_s
       next if name.empty?
       next if name.start_with?('__MACOSX', '.git')
-      # On extrait uniquement les entrees dans patch/
       next unless name.start_with?('patch/', 'patch\\')
-      target = name.tr('\\', '/')
+      target = File.join(staging_dir, name.tr('\\', '/'))
+      if entry.directory?
+        FileUtils.mkdir_p(target)
+        next
+      end
       dir = File.dirname(target)
       FileUtils.mkdir_p(dir) if dir && dir != '.'
-      begin
-        File.unlink(target) if File.exist?(target)
-      rescue
-      end
       begin
         zf.extract(entry, target) { true }
       rescue => e
         rejuvfr_log("Extract failed on #{name}: #{e.class}: #{e.message}")
+        return false
       end
     end
   end
   true
 rescue => e
-  rejuvfr_log("Apply zip failed: #{e.class}: #{e.message}")
+  rejuvfr_log("Extract to staging failed: #{e.class}: #{e.message}")
   false
 end
 
+# --- Script batch detache ---
+# Ce script attend que le jeu se ferme, deplace les fichiers du staging vers
+# patch/, puis se supprime. Sur Windows uniquement.
+
+def rejuvfr_write_apply_bat(staging_dir, bat_path)
+  # Absolutiser les chemins pour ne pas dependre du CWD au moment de
+  # l'execution du bat (Ruby et le bat detache ne partagent pas le meme).
+  game_dir = File.expand_path(".")
+  staging_abs = File.expand_path(staging_dir)
+  zip_abs = File.expand_path(REJUVFR_ZIP_TMP)
+  patch_abs = File.expand_path("patch")
+
+  content = <<~BAT
+    @echo off
+    setlocal
+
+    cd /d "#{game_dir}"
+
+    rem Attendre que le jeu se ferme pour liberer les locks sur patch/
+    timeout /t 3 /nobreak >nul 2>&1
+
+    if not exist "#{staging_abs}\\patch" (
+      echo [RejuvFR] Staging directory missing.
+      goto :end
+    )
+
+    rem Copier les fichiers du staging vers patch/ (ecrase les existants)
+    robocopy "#{staging_abs}\\patch" "#{patch_abs}" /E /R:5 /W:2 /NFL /NDL /NJH /NJS >nul 2>&1
+
+    rem Nettoyer le dossier de staging
+    rmdir /S /Q "#{staging_abs}" 2>nul
+
+    rem Supprimer le zip temporaire
+    if exist "#{zip_abs}" del /Q "#{zip_abs}" 2>nul
+
+    :end
+    rem Relancer Rejuvenation
+    if exist "#{game_dir}\\Rejuvenation.exe" (
+      start "" "#{game_dir}\\Rejuvenation.exe"
+    )
+    del "%~f0"
+  BAT
+  File.write(bat_path, content)
+  true
+rescue => e
+  rejuvfr_log("Write bat failed: #{e.class}: #{e.message}")
+  false
+end
+
+# --- Message helper (fallback si Kernel.pbMessage indisponible) ---
+
 def rejuvfr_safe_message(text, commands = nil, default = 0)
-  # Kernel.pbMessage est l'API standard mais son nom a legerement varie selon
-  # les versions. On tente les alternatives.
   if commands
     return Kernel.pbMessage(text, commands, default) if Kernel.respond_to?(:pbMessage)
     return pbMessage(text, commands, default) if defined?(pbMessage)
@@ -168,26 +235,44 @@ def rejuvfr_prompt_and_apply(info)
     return
   end
   unless info[:zip_url]
-    rejuvfr_safe_message("Aucun fichier ZIP disponible pour cette version.\nRendez-vous sur :\n#{REJUVFR_URL}")
+    rejuvfr_safe_message("Aucun fichier ZIP disponible.\nRendez-vous sur :\n#{REJUVFR_URL}")
     rejuvfr_mark_notified(latest)
     return
   end
   rejuvfr_safe_message("Téléchargement en cours...\nCela peut prendre quelques secondes.")
-  if rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
-    if rejuvfr_apply_zip(REJUVFR_ZIP_TMP)
-      begin; File.delete(REJUVFR_ZIP_TMP); rescue; end
-      rejuvfr_mark_notified(latest)
-      rejuvfr_safe_message("Mise à jour installée !\nLe jeu va se fermer pour appliquer les changements.")
-      begin
-        exit!
-      rescue
-        exit
-      end
-    else
-      rejuvfr_safe_message("L'installation a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
-    end
-  else
+  unless rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
     rejuvfr_safe_message("Le téléchargement a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
+    return
+  end
+  unless rejuvfr_extract_to_staging(REJUVFR_ZIP_TMP, REJUVFR_STAGING_DIR)
+    rejuvfr_safe_message("L'extraction a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
+    return
+  end
+  unless rejuvfr_write_apply_bat(REJUVFR_STAGING_DIR, REJUVFR_APPLY_BAT)
+    rejuvfr_safe_message("Impossible de préparer l'installation.\nRendez-vous sur :\n#{REJUVFR_URL}")
+    return
+  end
+  # Spawn detache du batch. Sur Windows, on invoque explicitement cmd.exe /c
+  # pour que le process soit correctement lance en mode detache.
+  begin
+    bat_abs = File.expand_path(REJUVFR_APPLY_BAT)
+    if defined?(spawn) && Process.respond_to?(:detach)
+      pid = spawn("cmd.exe", "/c", bat_abs, [:out, :err] => [REJUVFR_LOG_PATH, "a"])
+      Process.detach(pid)
+    else
+      # Fallback : system + start (bloque brievement mais fonctionne)
+      system("start \"\" /B cmd.exe /c \"#{bat_abs}\"")
+    end
+    rejuvfr_mark_notified(latest)
+    rejuvfr_safe_message("Mise à jour prête !\nLe jeu va se fermer.\nIl se relancera automatiquement dans quelques secondes.")
+    begin
+      exit!
+    rescue
+      exit
+    end
+  rescue => e
+    rejuvfr_log("Spawn failed: #{e.class}: #{e.message}")
+    rejuvfr_safe_message("Impossible de lancer l'installation.\nRendez-vous sur :\n#{REJUVFR_URL}")
   end
 rescue => e
   rejuvfr_log("Prompt failed: #{e.class}: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}")
