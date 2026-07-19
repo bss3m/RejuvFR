@@ -263,9 +263,11 @@ def rejuvfr_prompt_and_apply(info)
     rejuvfr_mark_notified(latest)
     return
   end
-  # Pas de message "en cours" : Kernel.pbMessage bloque en attendant une
-  # touche, ce qui piegeait l'utilisateur. Le fetch/extract prend quelques
-  # secondes, on affiche uniquement le resultat final.
+  # Message auto-dismiss (\wtnp[N] = attente N*2 frames sans pression de
+  # touche). Le message informe qu'un telechargement se prepare, se ferme
+  # tout seul, puis fetch/extract commencent (le jeu freeze ~2-3s en
+  # silence, comportement standard).
+  rejuvfr_safe_message("Téléchargement de la mise à jour...\\wtnp[45]")
   unless rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
     rejuvfr_safe_message("Le téléchargement a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
     return

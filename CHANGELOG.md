@@ -5,6 +5,7 @@
 * **Descriptions officielles Poképédia** pour les 18 Joyaux de type (Feu, Eau, Électrik, Plante, Glace, Combat, Poison, Sol, Vol, Psy, Insecte, Roche, Spectre, Dragon, Ténèbres, Acier, Normal, Fée) : « Objet à tenir. Joyau augmentant une fois la puissance des capacités de type X. » (~80 caractères, canon FR).
 * **Feuille Copieuse** (Mirror Herb) : description officielle Poképédia.
 * **Fix : la fenêtre CMD ne s'affiche plus** pendant l'installation de la mise à jour. L'updater passe désormais par un wrapper VBScript (`.rejuvfr_apply.vbs`) qui invoque le `.bat` via `WScript.Shell.Run(cmd, 0, false)` — le processus tourne en arrière-plan totalement invisible. Compatible Windows XP à Windows 11.
+* **Fix : le message « Téléchargement en cours... » ne bloque plus l'utilisateur**. Il utilise maintenant le code de contrôle `\wtnp[45]` (auto-dismiss après ~1.5 s, standard Rejuvenation) au lieu d'un `pbMessage` bloquant qui attendait une pression de touche. Les utilisateurs de v1.1.5 étaient piégés sur ce message.
 
 ## v1.1.5 (2026-07-19)
 
