@@ -2,19 +2,26 @@
 #
 # Au chargement d'une partie, on interroge l'API GitHub Releases. Si une
 # version plus recente est disponible, on propose au joueur de la telecharger
-# et de l'appliquer directement en jeu (comme le fait le mecanisme officiel
-# Updater de Rejuvenation), puis on redemarre.
+# et de l'appliquer directement, puis on redemarre.
 #
-# Aucune ecriture n'est faite tant que l'utilisateur n'a pas accepte.
+# Aucune ecriture n'est faite tant que l'utilisateur n'a pas accepte. Toute
+# erreur reseau ou API est silencieuse : le mod se contente de ne rien
+# afficher. Une trace debug peut etre laissee dans patch/.rejuvfr_updater.log.
 
-REJUVFR_VERSION = "1.1.1"
+REJUVFR_VERSION = "1.1.2"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_CACHE_PATH = "patch/.rejuvfr_update_check"
+REJUVFR_LOG_PATH = "patch/.rejuvfr_updater.log"
 REJUVFR_ZIP_TMP = "patch/.rejuvfr_download.zip"
 
-$rejuvfr_update_info = nil  # {version: "x.y.z", zip_url: "..."}
+$rejuvfr_update_info = nil
+
+def rejuvfr_log(msg)
+  File.open(REJUVFR_LOG_PATH, "a") { |f| f.puts "[RejuvFR] #{msg}" }
+rescue
+end
 
 def rejuvfr_already_notified?(latest)
   return false unless File.exist?(REJUVFR_CACHE_PATH)
@@ -32,6 +39,8 @@ def rejuvfr_version_gt?(a, b)
   aa = a.gsub(/^v/, '').split('.').map(&:to_i)
   bb = b.gsub(/^v/, '').split('.').map(&:to_i)
   (aa <=> bb) > 0
+rescue
+  false
 end
 
 # --- Detection ---
@@ -52,118 +61,136 @@ Thread.new do
     if res.is_a?(Net::HTTPSuccess)
       data = JSON.parse(res.body)
       latest = (data["tag_name"] || "").gsub(/^v/, '')
-      return if latest.empty?
-      return unless rejuvfr_version_gt?(latest, REJUVFR_VERSION)
-      return if rejuvfr_already_notified?(latest)
-      # Chercher l'asset zip .zip
-      zip_asset = (data["assets"] || []).find { |a| a["name"] =~ /\.zip$/i }
-      $rejuvfr_update_info = {
-        version: latest,
-        zip_url: zip_asset ? zip_asset["browser_download_url"] : nil,
-      }
-    end
-  rescue
-    # silencieux : hors ligne, timeout, DNS, etc.
-  end
-end
-
-# --- Telechargement + application ---
-
-def rejuvfr_download_zip(url, dest_path)
-  require 'net/http'
-  require 'uri'
-  msgwindow = Kernel.pbCreateMessageWindow
-  Kernel.pbMessageDisplay(msgwindow, _INTL("Téléchargement de la mise à jour...\\wtnp[0]"))
-  ok = false
-  begin
-    uri = URI.parse(url)
-    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-      http.open_timeout = 10
-      http.read_timeout = 60
-      # GitHub redirige vers un CDN. Suivre les redirections manuellement.
-      redirects = 0
-      loop do
-        req = Net::HTTP::Get.new(uri.request_uri)
-        req["User-Agent"] = "RejuvFR/#{REJUVFR_VERSION}"
-        res = http.request(req)
-        case res
-        when Net::HTTPRedirection
-          redirects += 1
-          break if redirects > 5
-          new_uri = URI.parse(res['location'])
-          if new_uri.host && new_uri.host != uri.host
-            http.finish
-            http = Net::HTTP.new(new_uri.host, new_uri.port)
-            http.use_ssl = new_uri.scheme == 'https'
-            http.start
-          end
-          uri = new_uri
-          next
-        when Net::HTTPSuccess
-          File.open(dest_path, 'wb') { |f| f.write(res.body) }
-          ok = true
-          break
-        else
-          break
+      unless latest.empty?
+        if rejuvfr_version_gt?(latest, REJUVFR_VERSION) && !rejuvfr_already_notified?(latest)
+          zip_asset = (data["assets"] || []).find { |a| a["name"].to_s =~ /\.zip$/i }
+          $rejuvfr_update_info = {
+            version: latest,
+            zip_url: zip_asset ? zip_asset["browser_download_url"] : nil,
+          }
+          rejuvfr_log("Detected update v#{latest}")
         end
       end
     end
   rescue => e
-    ok = false
-  ensure
-    Kernel.pbDisposeMessageWindow(msgwindow) if msgwindow
+    rejuvfr_log("Detection failed: #{e.class}: #{e.message}")
   end
-  ok
+end
+
+# --- Telechargement ---
+# Reimplemente en pilotant Net::HTTP.start / redirections manuellement, sans
+# reutiliser une connexion inter-hosts (source du NoMethodError en v1.1.1).
+
+def rejuvfr_fetch(url, dest_path, redirects_left = 5)
+  require 'net/http'
+  require 'uri'
+  uri = URI.parse(url)
+  return false unless uri.host
+  Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+    http.open_timeout = 10
+    http.read_timeout = 120
+    req = Net::HTTP::Get.new(uri.request_uri)
+    req["User-Agent"] = "RejuvFR/#{REJUVFR_VERSION}"
+    res = http.request(req)
+    case res
+    when Net::HTTPRedirection
+      return false if redirects_left <= 0
+      loc = res['location']
+      return false if loc.nil? || loc.empty?
+      # Si location relative -> resoudre par rapport a l'uri courante
+      new_url = loc.start_with?('http') ? loc : URI.join(url, loc).to_s
+      return rejuvfr_fetch(new_url, dest_path, redirects_left - 1)
+    when Net::HTTPSuccess
+      File.open(dest_path, 'wb') { |f| f.write(res.body) }
+      return true
+    else
+      rejuvfr_log("HTTP #{res.code} on #{url}")
+      return false
+    end
+  end
+rescue => e
+  rejuvfr_log("Fetch failed: #{e.class}: #{e.message}")
+  false
 end
 
 def rejuvfr_apply_zip(zip_path)
   require 'zip'
   require 'fileutils'
-  # On extrait par-dessus le dossier courant. Le zip contient patch/*.
   Zip::File.open(zip_path) do |zf|
     zf.each do |entry|
-      # Skip metadata files
-      next if entry.name.start_with?('__MACOSX', '.git')
-      # Cible : racine du jeu
-      target = entry.name
-      # Skip fichiers hors patch/ (INSTALLATION.txt, LICENSE)
-      next unless target.start_with?('patch/', 'patch\\')
-      FileUtils.mkdir_p(File.dirname(target))
-      # Supprimer avant d'ecrire pour eviter le lock (si le jeu utilise le fichier)
-      File.unlink(target) rescue nil if File.exist?(target)
-      zf.extract(entry, target) { true }
+      name = entry.name.to_s
+      next if name.empty?
+      next if name.start_with?('__MACOSX', '.git')
+      # On extrait uniquement les entrees dans patch/
+      next unless name.start_with?('patch/', 'patch\\')
+      target = name.tr('\\', '/')
+      dir = File.dirname(target)
+      FileUtils.mkdir_p(dir) if dir && dir != '.'
+      begin
+        File.unlink(target) if File.exist?(target)
+      rescue
+      end
+      begin
+        zf.extract(entry, target) { true }
+      rescue => e
+        rejuvfr_log("Extract failed on #{name}: #{e.class}: #{e.message}")
+      end
     end
   end
   true
 rescue => e
+  rejuvfr_log("Apply zip failed: #{e.class}: #{e.message}")
   false
+end
+
+def rejuvfr_safe_message(text, commands = nil, default = 0)
+  # Kernel.pbMessage est l'API standard mais son nom a legerement varie selon
+  # les versions. On tente les alternatives.
+  if commands
+    return Kernel.pbMessage(text, commands, default) if Kernel.respond_to?(:pbMessage)
+    return pbMessage(text, commands, default) if defined?(pbMessage)
+    puts "[RejuvFR] #{text}"
+    return default
+  else
+    return Kernel.pbMessage(text) if Kernel.respond_to?(:pbMessage)
+    return pbMessage(text) if defined?(pbMessage)
+    puts "[RejuvFR] #{text}"
+    return nil
+  end
 end
 
 def rejuvfr_prompt_and_apply(info)
   latest = info[:version]
-  msg = _INTL("Nouvelle version de RejuvFR disponible : v{1}\n(actuelle : v{2})\n\nTélécharger et installer maintenant ?", latest, REJUVFR_VERSION)
-  choice = Kernel.pbMessage(msg, [_INTL("Oui"), _INTL("Non")], 1)
+  msg = "Nouvelle version de RejuvFR disponible : v#{latest}\n(actuelle : v#{REJUVFR_VERSION})\n\nTélécharger et installer maintenant ?"
+  choice = rejuvfr_safe_message(msg, ["Oui", "Non"], 1)
   if choice != 0
     rejuvfr_mark_notified(latest)
     return
   end
   unless info[:zip_url]
-    Kernel.pbMessage(_INTL("Aucun fichier ZIP disponible pour cette release.\nRendez-vous sur :\n{1}", REJUVFR_URL))
+    rejuvfr_safe_message("Aucun fichier ZIP disponible pour cette version.\nRendez-vous sur :\n#{REJUVFR_URL}")
     rejuvfr_mark_notified(latest)
     return
   end
-  if rejuvfr_download_zip(info[:zip_url], REJUVFR_ZIP_TMP)
+  rejuvfr_safe_message("Téléchargement en cours...\nCela peut prendre quelques secondes.")
+  if rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
     if rejuvfr_apply_zip(REJUVFR_ZIP_TMP)
       begin; File.delete(REJUVFR_ZIP_TMP); rescue; end
       rejuvfr_mark_notified(latest)
-      Kernel.pbMessage(_INTL("Mise à jour installée !\nLe jeu va se fermer pour appliquer les changements."))
-      exit!
+      rejuvfr_safe_message("Mise à jour installée !\nLe jeu va se fermer pour appliquer les changements.")
+      begin
+        exit!
+      rescue
+        exit
+      end
     else
-      Kernel.pbMessage(_INTL("L'installation a échoué.\nRendez-vous sur :\n{1}", REJUVFR_URL))
+      rejuvfr_safe_message("L'installation a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
     end
   else
-    Kernel.pbMessage(_INTL("Le téléchargement a échoué.\nRendez-vous sur :\n{1}", REJUVFR_URL))
+    rejuvfr_safe_message("Le téléchargement a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
   end
+rescue => e
+  rejuvfr_log("Prompt failed: #{e.class}: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}")
 end
 
 # --- Hook : proposer la mise a jour au chargement d'une partie ---
@@ -176,18 +203,27 @@ Thread.new do
   next unless defined?(Scene_Map)
   s = $VERBOSE
   $VERBOSE = nil
-  Scene_Map.class_eval do
-    unless method_defined?(:_orig_main_rejuvfr_updater)
-      alias_method :_orig_main_rejuvfr_updater, :main
-      define_method(:main) do
-        if $rejuvfr_update_info && $Trainer && !@_rejuvfr_notified
-          @_rejuvfr_notified = true
-          rejuvfr_prompt_and_apply($rejuvfr_update_info)
-          $rejuvfr_update_info = nil
+  begin
+    Scene_Map.class_eval do
+      unless method_defined?(:_orig_main_rejuvfr_updater)
+        alias_method :_orig_main_rejuvfr_updater, :main
+        define_method(:main) do
+          begin
+            if $rejuvfr_update_info && defined?($Trainer) && $Trainer && !@_rejuvfr_notified
+              @_rejuvfr_notified = true
+              info = $rejuvfr_update_info
+              $rejuvfr_update_info = nil
+              rejuvfr_prompt_and_apply(info)
+            end
+          rescue => e
+            rejuvfr_log("Scene_Map hook failed: #{e.class}: #{e.message}")
+          end
+          _orig_main_rejuvfr_updater
         end
-        _orig_main_rejuvfr_updater
       end
     end
+  rescue => e
+    rejuvfr_log("Hook install failed: #{e.class}: #{e.message}")
   end
   $VERBOSE = s
 end

@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.2 (2026-07-19)
+
+Correctifs sur l'updater in-game :
+
+* Fix : le telechargement automatique plantait avec `NoMethodError` chez certains utilisateurs. La gestion des redirections HTTP a ete reecrite (recursion au lieu de manipuler `http.start`/`http.finish` en cours de bloc, qui causait des etats invalides quand GitHub redirigeait le zip vers son CDN).
+* Fix : ajout d'un wrapper `rejuvfr_safe_message` qui teste plusieurs alternatives pour `Kernel.pbMessage`. Aucun `NoMethodError` meme si l'API varie legerement selon la version du moteur.
+* Fix : tous les textes du prompt sont maintenant en dur en francais au lieu de passer par `_INTL`, qui n'est parfois pas encore charge quand la notification est declenchee.
+* Ajout d'un log de debug dans `patch/.rejuvfr_updater.log` pour tracer les eventuelles erreurs de detection / telechargement / extraction.
+
 ## v1.1.1 (2026-07-19)
 
 Correctifs de terminologie officielle FR :
