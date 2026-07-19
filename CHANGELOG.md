@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.4 (2026-07-19)
+
+Correctif critique sur l'updater in-game :
+
+* Fix : la boîte de dialogue de proposition de mise à jour apparaissait **avant** l'initialisation de la scène de jeu (`Scene_Map#main` était hooké au tout début, avant `createSpritesets`, `Graphics.transition` et `Input.update`). Résultat : la boîte s'affichait mais **ne pouvait pas être fermée** car l'input n'était pas encore actif.
+* Le hook est déplacé sur `Scene_Map#update` avec une attente d'environ 60 frames (une seconde) après l'entrée dans la scène. Le prompt ne s'affiche plus que si aucun autre message n'est en cours, aucune transition n'est en train de se jouer, et aucun event Ruby n'est en exécution.
+* Ajout d'un `rescue` protecteur qui marque la notification comme traitée en cas d'erreur, pour éviter une boucle infinie de crash.
+
 ## v1.1.3 (2026-07-19)
 
 Réécriture complète de l'updater pour qu'il fonctionne réellement.

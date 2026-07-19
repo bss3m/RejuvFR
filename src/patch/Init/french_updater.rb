@@ -10,7 +10,7 @@
 # locks Windows qui empechent d'ecraser messages_fr.dat pendant l'execution.
 # C'est le meme pattern que l'Updater officiel de Rejuvenation.
 
-REJUVFR_VERSION = "1.1.3"
+REJUVFR_VERSION = "1.1.4"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
@@ -279,6 +279,15 @@ rescue => e
 end
 
 # --- Hook : proposer la mise a jour au chargement d'une partie ---
+#
+# On hooke Scene_Map#update (pas #main). En hookant #main, on affichait le
+# prompt AVANT createSpritesets/Graphics.transition/Input.update -> l'input
+# n'etait pas actif et le message etait non-quittable.
+#
+# On attend en plus quelques frames pour que la scene soit stabilisee et
+# que l'utilisateur voie bien qu'il est en jeu.
+
+$rejuvfr_frames_before_prompt = 60  # ~1 seconde a 60 fps
 
 Thread.new do
   60.times do
@@ -290,20 +299,38 @@ Thread.new do
   $VERBOSE = nil
   begin
     Scene_Map.class_eval do
-      unless method_defined?(:_orig_main_rejuvfr_updater)
-        alias_method :_orig_main_rejuvfr_updater, :main
-        define_method(:main) do
+      unless method_defined?(:_orig_update_rejuvfr_updater)
+        alias_method :_orig_update_rejuvfr_updater, :update
+        define_method(:update) do
+          _orig_update_rejuvfr_updater
           begin
             if $rejuvfr_update_info && defined?($Trainer) && $Trainer && !@_rejuvfr_notified
-              @_rejuvfr_notified = true
-              info = $rejuvfr_update_info
-              $rejuvfr_update_info = nil
-              rejuvfr_prompt_and_apply(info)
+              # Ne pas afficher pendant qu'un autre message est deja en cours,
+              # ni pendant une transition/transfer, ni pendant un event.
+              busy = false
+              begin
+                busy ||= $game_temp && $game_temp.message_window_showing
+                busy ||= $game_temp && $game_temp.player_transferring
+                busy ||= $game_temp && $game_temp.transition_processing
+                busy ||= $game_system && $game_system.map_interpreter && $game_system.map_interpreter.running?
+              rescue
+              end
+              unless busy
+                @_rejuvfr_wait_frames ||= $rejuvfr_frames_before_prompt
+                if @_rejuvfr_wait_frames > 0
+                  @_rejuvfr_wait_frames -= 1
+                else
+                  @_rejuvfr_notified = true
+                  info = $rejuvfr_update_info
+                  $rejuvfr_update_info = nil
+                  rejuvfr_prompt_and_apply(info)
+                end
+              end
             end
           rescue => e
-            rejuvfr_log("Scene_Map hook failed: #{e.class}: #{e.message}")
+            rejuvfr_log("Scene_Map update hook failed: #{e.class}: #{e.message}")
+            @_rejuvfr_notified = true  # eviter boucle infinie sur erreur
           end
-          _orig_main_rejuvfr_updater
         end
       end
     end
