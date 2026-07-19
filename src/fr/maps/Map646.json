@@ -271,7 +271,7 @@
   "GRUNT: I told you to be careful, didn't I?!": "SBIRE: Je t'avais dit de faire attention, non ?!",
   "Now look what's happened!": "Regarde ce qui est arrivé !",
   "GRUNT: I'm being careful, too.": "SBIRE: Je fais attention, moi aussi.",
-  "<ac>Your soul feels rejuvenated!": "<ac>Ton âme se sent rajeunie !",
+  "<ac>Your soul feels rejuvenated!": "<ac>Ton âme se sent revigorée !",
   "All Common Tickets will be converted to Rare Tickets upon entering the next floor.": "Tous les Tickets Communs seront convertis en Tickets Rares en entrant à l'étage suivant.",
   "You feel the energy of the tower strengthen your Pokémon!": "Tu sens l'énergie de la tour renforcer tes Pokémon !",
   "PATTY: That item ball has 3 Common Tickets in it!": "PATTY: Cette boule d'objet contient 3 Tickets Communs !",
@@ -296,5 +296,10 @@
   "Monsters?": "Des monstres ?",
   "Xenpurgis F2": "Xenpurgis É2",
   "Xenpurgis F3": "Xenpurgis É3",
-  "Buy!": "Acheter !"
+  "Buy!": "Acheter !",
+  "Do what with the Standard Bag?": "Faire quoi avec le Sac Standard ?",
+  "Do what with the Beginner Bag?": "Faire quoi avec le Sac Débutant ?",
+  "Do what with the Advanced Bag?": "Faire quoi avec le Sac Avancé ?",
+  "Equip": "Équiper",
+  "Unequip": "Déséquiper"
 }

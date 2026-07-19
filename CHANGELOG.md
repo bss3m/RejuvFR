@@ -1,5 +1,34 @@
 # Changelog
 
+## v1.1.0 (2026-07-19)
+
+Cible : **Rejuvenation 14.0.6**.
+
+### Nouveautes / New features
+
+* **Selection du genre du personnage** au moment de choisir "Francais". Le choix (masculin / feminin) est sauvegarde dans `Saved Games/Rejuv/french_gender.dat` et persiste entre redemarrages. Les 2849 marqueurs d'accord `(e)`, `(euse)`, `(trice)`, `(elle)`, `(ere)`... sont resolus automatiquement dans tous les dialogues qui s'adressent au joueur.
+* **Mise a jour in-game** : au chargement d'une partie, le mod verifie s'il existe une nouvelle version sur GitHub Releases. Si oui, il propose de la telecharger et de l'installer directement (comme le fait le systeme officiel Updater de Rejuvenation), puis relance le jeu.
+
+### Corrections critiques
+
+* **Mots de passe story preserves en anglais**. `PASSWORD: UNBOUND` et `PASSWORD: SOUL` avaient ete traduits (`DECHAINE` / `AME`), rendant les enigmes impossibles a resoudre. Les mots de passe cheat de `passwordtext.rb` (mintyfresh, casspack, easymode, etc.) sont egalement verifies.
+* **La langue francaise est desormais conservee au redemarrage**. Avant, `pbLoadLanguage` etait appele au boot avec `LANGUAGES = {}`, ce qui reinitialisait le jeu en anglais. Un hook sur `pbLoadLanguage` reinjecte la constante avant chaque resolution.
+
+### Fixes
+
+* **1188 nouvelles traductions** injectees pour la mise a jour 14.0.6 (680 noms de dresseurs, 333 noms Battle Tower, ~175 dialogues et scripts).
+* **Timburr = Charpenti** (etait errone en "Trompignon", qui est Foongus).
+* **Jeu de mot "Sea you"** refait proprement en francais : `On se voit MERcredi. Tu piges ? MER - credi`.
+* **Allongement moqueur "a litttleeee paranoid"** rendu en `un touuut ptiiit peu parano` (etait `uuuun tiiiiout peu parano`, cassait la moquerie).
+* **7 residus "PERDUe"** (majuscules) fixes en "PERDU".
+* **155 occurrences de "POKeMON"** corrigees en "POKEMON".
+* **"sur(e) scene"** -> **"sur scene"** (Alexandra, Map638).
+* **Idiomes "on fire"** re-traduits en francais familier : 10 lignes, "je vois que t'es chaud", "T'es chaud !", etc.
+* **"practice round"** -> "echauffement" (etait "juste un repetition").
+* **Erreurs de traduction diverses** ("coupable" -> "coupe" pour l'arbre a couper, etc.).
+* **`_MAPINTL` hook** ajoute pour couvrir les dialogues d'events RPG Maker XP (qui ne passaient pas par le hook `_INTL`).
+* **`french_battle_messages.rb` etendu** : fallback vers `:FieldMessages`, `:AceSpeech`, `:EndSpeechLose` en plus de `:ScriptTexts` pour recuperer les traductions stockees dans le mauvais bucket.
+
 ## v1.0.12 (2026-07-17)
 
 * Fix: 7880 dialogues avaient un point d'interrogation ou d'exclamation directement suivi d'une lettre, sans espace ("Vraiment ?Tu es..." au lieu de "Vraiment ? Tu es..."). Meme mecanisme de correction que v1.0.11 mais applique a `?` et `!`.

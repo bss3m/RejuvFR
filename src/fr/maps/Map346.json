@@ -69,8 +69,8 @@
   "NOTHING!": "Rien !",
   "AELITA: I gotta be careful!": "AELITA: Je dois faire attention !",
   "That warp tile will send my butt through the cosmos if I'm not careful!": "Cette dalle de téléportation va m'envoyer aux quatre coins du cosmos si je fais pas gaffe !",
-  "<ac>You feel hatred in your heart...": "<ac>Vous sentez de la haine dans votre coeur...",
-  "<ac>Your soul feels rejuvenated!": "<ac>Votre âme se sent revigorée !",
+  "<ac>You feel hatred in your heart...": "<ac>Tu ressens de la haine dans ton cœur...",
+  "<ac>Your soul feels rejuvenated!": "<ac>Ton âme se sent revigorée !",
   "It's powerful and can subject your Pokémon to tormenting memories that leave them unable to repeat actions.": "Il est puissant et peut soumettre vos Pokémon à des souvenirs tourmentants qui les empêchent de répéter des actions.",
   "On this field, Ice types have their defenses boosted, while Fire types have them weakened.": "Sur ce terrain, les défenses des types Glace sont renforcées, tandis que celles des types Feu sont affaiblies.",
   "Dark and Ice-type attacks get a fairly significant boost in power.": "Les attaques de type Ténèbres et Glace bénéficient d'un bonus de puissance assez important.",
@@ -257,5 +257,6 @@
   "BRAIXEN: Melia!": "ROUSSIL: Melia !",
   "AELITA: Whoa, someone catch \\PN! I think they're about to--": "AELITA: Oh là, quelqu'un rattrape \\PN ! Je crois qu'iel va...",
   "TAPU KOKO: Taapu!": "TOKORICO: Taapu !",
-  "TAPU FINI: Finis?": "TOKOPISCO: Finis ?"
+  "TAPU FINI: Finis?": "TOKOPISCO: Finis ?",
+  "Though the scoundrel has failed in creating an opening—That does not mean it does not exist.": "Bien que ce vaurien ait échoué à créer une ouverture... Cela ne veut pas dire qu'elle n'existe pas."
 }

@@ -31,8 +31,8 @@
   "I left my MONSTER here at the BIKE-SHOP!": "J'ai laissé mon MONSTRE ici au MAGASIN DE VÉLOS !",
   "I hope MONSTER grows strong and powerful!": "J'espère que MONSTRE deviendra fort et puissant !",
   "It's dangerous for GIRLS like me to explore the TRUNKLEAF FOREST!": "C'est dangereux pour les FILLES comme moi d'explorer la FORÊT DE TRUNKLEAF !",
-  "Scary BUG POKéMON may pop out. Eeek!": "Des POKéMON INSECTES effrayants pourraient surgir. Iiik !",
-  "The FOREST is scary because it has POKéMON! Frightening, indeed!": "La FORÊT est effrayante parce qu'il y a des POKéMON ! Terrifiant, vraiment !",
+  "Scary BUG POKÉMON may pop out. Eeek!": "Des POKÉMON INSECTES effrayants pourraient surgir. Iiik !",
+  "The FOREST is scary because it has POKÉMON! Frightening, indeed!": "La FORÊT est effrayante parce qu'il y a des POKÉMON ! Terrifiant, vraiment !",
   "AELITA: Whoa... What is this place?": "AELITA: Waouh...C'est quoi cet endroit ?",
   "REN: No idea, but it kinda looks like a video game.": "REN: Aucune idée, mais ça ressemble un peu à un jeu vidéo.",
   "AELITA: What's all of this doing in Eclysia Pyramid?!": "AELITA: Qu'est-ce que tout ça fait dans la Pyramide d'Eclysia ?!",
@@ -76,7 +76,7 @@
   "My DAUGHTER dug her OWN grave. She said she likes the SOIL.": "Ma FILLE a creusé sa PROPRE tombe. Elle a dit qu'elle aimait la TERRE.",
   "As a father I am PROUD, but as a father, I am SAD.": "En tant que père, je suis FIER, mais en tant que père, je suis TRISTE.",
   "There are GHOSTS in this WORLD. Don't agree? DIE.": "Il y a des FANTÔMES dans ce MONDE. Pas d'accord ? MEURS.",
-  "My poor POKéMON! They ran away from HOME!": "Mes pauvres POKéMON !  Ils se sont enfuis de la MAISON !",
+  "My poor POKÉMON! They ran away from HOME!": "Mes pauvres POKÉMON !  Ils se sont enfuis de la MAISON !",
   "Is it because I did not feed them?": "Est-ce parce que je ne les ai pas nourris ?",
   "EIZEN: Greetings.": "EIZEN: Salutations.",
   "EIZEN: Apologies.": "EIZEN: Mes excuses.",
@@ -133,5 +133,8 @@
   "Back up, man.": "Recule, mec.",
   "Uh... Helllooo?": "Euh... Alllôô ?",
   "Yuh.": "Ouep.",
-  "Where's Isha?": "Où est Isha ?"
+  "Where's Isha?": "Où est Isha ?",
+  "Scary BUG POKéMON may pop out. Eeek!": "Des POKéMON INSECTES effrayants peuvent surgir. Iiik !",
+  "The FOREST is scary because it has POKéMON! Frightening, indeed!": "La FORÊT est effrayante parce qu'il y a des POKéMON ! Terrifiant, en effet !",
+  "My poor POKéMON! They ran away from HOME!": "Mes pauvres POKéMON ! Ils se sont enfuis de la MAISON !"
 }

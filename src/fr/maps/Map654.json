@@ -73,8 +73,8 @@
   "You don't have the F-Disk.": "Tu n'as pas le F-Disk.",
   "REN: I've noticed we've been driving downwards instead of just, like, horizontal.": "REN : J'ai remarqué qu'on descend au lieu d'aller genre, à l'horizontale.",
   "All these twisty turns, too.": "Et tous ces virages en plus.",
-  "<ac>You feel hatred in your heart...": "<ac>Tu sens de la haine dans ton coeur...",
-  "<ac>Your soul feels rejuvenated!": "<ac>Ton âme se sent rajeunie !",
+  "<ac>You feel hatred in your heart...": "<ac>Tu ressens de la haine dans ton cœur...",
+  "<ac>Your soul feels rejuvenated!": "<ac>Ton âme se sent revigorée !",
   "VENAM: Okay, why the hell am I the one driving this?!": "VENAM : Bon, pourquoi diable c'est moi qui conduis ce truc ?!",
   "I don't even have my license!": "J'ai même pas mon permis !",
   "Ren should have been the one doing this. Not me.": "C'est Ren qui aurait dû s'en charger. Pas moi.",
@@ -563,5 +563,7 @@
   "KIERAN: I feel so bad that we had to spay these kitties, but it's just what had to happen...": "KIERAN: Je me sens tellement mal qu'on ait dû stériliser ces minettes, mais c'est ce qui devait arriver...",
   "Oh well! There are other cats out there.": "Tant pis ! Il y a d'autres chats là dehors.",
   "CLEAR: What do you plan on doing with them?": "CLEAR: Que comptes-tu faire d'elles ?",
-  "KIERAN: They're no longer needed. Unnecessary assets that need to be liquidated.": "KIERAN: Elles ne sont plus nécessaires. Des atouts inutiles qu'il faut liquider."
+  "KIERAN: They're no longer needed. Unnecessary assets that need to be liquidated.": "KIERAN: Elles ne sont plus nécessaires. Des atouts inutiles qu'il faut liquider.",
+  "PEONY: Child! This key was dropped by one of those horrible beasts!": "PEONY : Enfant ! Cette clé a été lâchée par l'une de ces horribles bêtes !",
+  "PEONY: It will prove more useful to you! Take it!": "PEONY : Elle te sera plus utile ! Prends-la !"
 }

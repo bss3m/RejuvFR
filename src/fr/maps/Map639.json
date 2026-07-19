@@ -760,7 +760,7 @@
   "So I'm going to have to kill you again. No hard feelings.": "Je vais donc devoir vous retuer. Sans rancune.",
   "STORM-NYM: What?! What is this?!": "STORM-NYM: Quoi ?! Qu'est-ce que c'est que ça ?!",
   "An Interceptor?!": "Un Intercepteur ?!",
-  "This is... <gr=00ffee 00ff3c>\\v[930]</gr> isn't it?! You LOST. Obey your Queen!": "C'est... <gr=00ffee 00ff3c>\\v[930]</gr>, n'est-ce pas ?! Tu as PERDUé. Obeis à ta Reine !",
+  "This is... <gr=00ffee 00ff3c>\\v[930]</gr> isn't it?! You LOST. Obey your Queen!": "C'est... <gr=00ffee 00ff3c>\\v[930]</gr>, n'est-ce pas ?! Tu as PERDU. Obeis à ta Reine !",
   "AEVIS: It's sad that you're this way. Just demanding and hateful as ever.": "AEVIS: C'est triste que tu sois comme ça. Toujours aussi exigeante et hargneuse.",
   "AEVIA: Our past is coming to help us now. You will face your own retribution!": "AEVIA: Notre passe vient nous preter main-forte. Tu vas subir ton propre chatiment !",
   "STORM-NYM: Oh, I understand what's going on now...": "STORM-NYM: Oh, je comprends ce qui se passe maintenant...",
@@ -1039,5 +1039,8 @@
   "PC": "PC",
   "Healing Machine": "Machine de soin",
   "It is because of you that we even made it this far...": "C'est grâce à toi que nous sommes arrivés jusqu'ici...",
-  "And using her aura, my lifespan should have increased considerably.": "Et grâce à son aura, mon espérance de vie devrait avoir considérablement augmenté."
+  "And using her aura, my lifespan should have increased considerably.": "Et grâce à son aura, mon espérance de vie devrait avoir considérablement augmenté.",
+  "???: Meloetta, ma chère amie...": "??? : Meloetta, ma chère amie...",
+  "<ac>You feel hatred in your heart...": "<ac>Tu ressens de la haine dans ton cœur...",
+  "<ac>Your soul feels rejuvenated!": "<ac>Ton âme se sent revigorée !"
 }

@@ -1,0 +1,138 @@
+# Selection du genre pour la traduction FR.
+#
+# Quand l'utilisateur choisit "Francais" dans le menu Langue, un second menu
+# M/F apparait. Le choix est stocke dans un fichier separe french_gender.dat
+# dans le dossier de save et persiste entre les redemarrages.
+#
+# Expose $genre_fr = :M ou :F pour la resolution des accords (e) dans
+# les dialogues qui s'adressent au joueur.
+
+FR_GENDER_FILE = "french_gender.dat"
+
+def rejuvfr_gender_path
+  RTP.getSaveFileName(FR_GENDER_FILE)
+rescue
+  nil
+end
+
+def rejuvfr_load_gender
+  path = rejuvfr_gender_path
+  return nil unless path && File.exist?(path)
+  data = File.read(path).strip
+  case data
+  when "M", "F" then data.to_sym
+  else nil
+  end
+rescue
+  nil
+end
+
+def rejuvfr_save_gender(sym)
+  path = rejuvfr_gender_path
+  return unless path
+  File.write(path, sym.to_s)
+rescue
+end
+
+def rejuvfr_prompt_gender
+  # Message affiche en dur en FR : _INTL ne serait pas encore disponible
+  # lors du tout premier choix, avant pbLoadLanguage.
+  current = $genre_fr
+  if current
+    label = current == :F ? "féminin" : "masculin"
+    msg = "Traduction française activée.\nActuellement en #{label}.\nQuel est le genre de ton personnage ?"
+  else
+    msg = "Bienvenue dans la traduction française !\nQuel est le genre de ton personnage ?"
+  end
+  default = current == :F ? 1 : 0
+  choice = Kernel.pbMessage(msg, ["Masculin", "Féminin"], default)
+  sym = choice == 1 ? :F : :M
+  rejuvfr_save_gender(sym)
+  $genre_fr = sym
+end
+
+# Charger le genre existant au demarrage.
+$genre_fr = rejuvfr_load_gender
+
+# Liste blanche des suffixes que l'on considere comme des marqueurs de genre.
+# On evite ainsi de manger des balises fonctionnelles comme (SOIN), (Nord),
+# (Kakori), (COPY), (PgUp)... ou des choix d'options entre parentheses.
+GENDER_SUFFIXES = %w[
+  e s se ne le ve te
+  nne lle tte ère ète ïne
+  euse rice trice ière elle
+].freeze
+GENDER_MARKER_RE = /\(([a-zà-ÿA-ZÀ-Ÿ]{1,6})\)/
+
+def rejuvfr_apply_gender(text)
+  return text unless text.is_a?(String)
+  return text unless text.include?("(")
+  case $genre_fr
+  when :F
+    text.gsub(GENDER_MARKER_RE) do |m|
+      suf = $1
+      GENDER_SUFFIXES.include?(suf.downcase) ? suf : m
+    end
+  when :M, nil
+    text.gsub(GENDER_MARKER_RE) do |m|
+      GENDER_SUFFIXES.include?($1.downcase) ? "" : m
+    end
+  else
+    text
+  end
+end
+
+# Hook sur _INTL et _MAPINTL : applique la resolution genre sur tout le texte
+# final. _MAPINTL est utilise pour tous les dialogues d'events RPG Maker XP
+# (donc la grande majorite des textes affiches en jeu).
+Thread.new do
+  60.times do
+    break if defined?(_INTL) && defined?(_MAPINTL)
+    sleep 0.1
+  end
+  s = $VERBOSE
+  $VERBOSE = nil
+  Object.class_eval do
+    unless private_method_defined?(:_orig_INTL_fr_gender) || method_defined?(:_orig_INTL_fr_gender)
+      alias_method :_orig_INTL_fr_gender, :_INTL
+      define_method(:_INTL) do |*args|
+        rejuvfr_apply_gender(_orig_INTL_fr_gender(*args))
+      end
+    end
+    unless private_method_defined?(:_orig_MAPINTL_fr_gender) || method_defined?(:_orig_MAPINTL_fr_gender)
+      alias_method :_orig_MAPINTL_fr_gender, :_MAPINTL
+      define_method(:_MAPINTL) do |*args|
+        rejuvfr_apply_gender(_orig_MAPINTL_fr_gender(*args))
+      end
+    end
+  end
+  $VERBOSE = s
+end
+
+# Hook sur pbChooseLanguage : apres selection, si Francais, prompt M/F.
+Thread.new do
+  60.times do
+    break if defined?(pbChooseLanguage)
+    sleep 0.1
+  end
+  next unless defined?(pbChooseLanguage)
+  s = $VERBOSE
+  $VERBOSE = nil
+  Object.class_eval do
+    unless private_method_defined?(:_orig_pbChooseLanguage_fr) || method_defined?(:_orig_pbChooseLanguage_fr)
+      alias_method :_orig_pbChooseLanguage_fr, :pbChooseLanguage
+      define_method(:pbChooseLanguage) do
+        idx = _orig_pbChooseLanguage_fr
+        begin
+          langname = LANGUAGES.keys[idx]
+          if langname && langname.downcase.start_with?("franc")
+            rejuvfr_prompt_gender
+          end
+        rescue
+        end
+        idx
+      end
+    end
+  end
+  $VERBOSE = s
+end

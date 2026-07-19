@@ -127,7 +127,7 @@
   "It's QUEEN ANGELICA's diary.": "C'est le journal intime de la REINE ANGELICA. ",
   "\\PNUpper ripped the diary from the middle seam!": "\\PNUpper a déchiré le journal en deux par la reliure !",
   "ANGELICA's curse was broken!": "La malédiction d'ANGELICA a été brisée !",
-  "All of the POKéMON in your party have been sent to your PC!": "Tous les POKéMON de votre équipe ont été envoyés à votre PC !",
+  "All of the POKÉMON in your party have been sent to your PC!": "Tous les POKÉMON de votre équipe ont été envoyés à votre PC !",
   "ANGELICA: To the low life awful person who is reading my diary.": "ANGELICA: À la personne minable et odieuse qui lit mon journal.",
   "HA!": "HA !",
   "You constantly forget that, I , ANGELICA, is far superior and smarter than YOU!": "Vous oubliez constamment que moi, ANGELICA, je suis bien supérieure et plus intelligente que VOUS !",
@@ -261,7 +261,7 @@
   "<ac>\\PN got the Fairy Tale: Beginning and Ends Badges.": "<ac>\\PN a obtenu les Badges Conte de Fées : Débuts et Fins.",
   "<ac>And also...": "<ac>Et aussi...",
   "\\GOLD MAN: I have services to share, if you have the coin to afford it!": "\\GVIEIL HOMME : J'ai des services à offrir, si vous avez de quoi les payer !",
-  "\\GOLD MAN: Huzzah! I have given your POKéMON the blessing of health!": "\\GVIEIL HOMME : Hourra ! J'ai accordé à vos POKéMON la bénédiction de la santé !",
+  "\\GOLD MAN: Huzzah! I have given your POKÉMON the blessing of health!": "\\GVIEIL HOMME : Hourra ! J'ai accordé à vos POKÉMON la bénédiction de la santé !",
   "OLD MAN: You don't have enough tokens!": "VIEIL HOMME : Vous n'avez pas assez de jetons !",
   "\\GOLD MAN: Take these!": "\\GVIEIL HOMME : Prenez ceci !",
   "\\PNUpper got 6 REVIVES, FULL RESTORES, ETHER, AND FULL HEALS!": "\\PNUpper a reçu 6 RAPPELS, GUÉRISONS, HUILES ET TOTAL SOINS !",
@@ -311,5 +311,7 @@
   "Healing Kit - 50 T": "Kit de soin - 50 J",
   "Master Ball - 25 T (3)": "Master Ball - 25 J (3)",
   "Wildy Wilds": "Wildy Wilds",
-  "Forrey Forest": "Forêt de Forrey"
+  "Forrey Forest": "Forêt de Forrey",
+  "All of the POKéMON in your party have been sent to your PC!": "Tous les POKéMON de ton équipe ont été envoyés à ton PC !",
+  "\\GOLD MAN: Huzzah! I have given your POKéMON the blessing of health!": "\\GHOMME DORÉ : Hourra ! J'ai donné à tes POKéMON la bénédiction de la santé !"
 }

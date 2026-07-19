@@ -184,7 +184,7 @@
   "You made me lose my catch!": "Tu m'as fait rater ma prise !",
   "Oh, you just wanted to talk?": "Oh, tu voulais juste discuter ?",
   "Well, I suppose it's not too weird. Your strength says it all.": "Bon, j'imagine que c'est pas si bizarre. Ta force parle d'elle-même.",
-  "NO... I LOST ON MY 100TH BATTLE?! FUCK.": "NON... J'AI PERDUé AU 100e COMBAT ?! MERDE.",
+  "NO... I LOST ON MY 100TH BATTLE?! FUCK.": "NON... J'AI PERDU AU 100e COMBAT ?! MERDE.",
   "I guess this is my new home!": "J'imagine que c'est ma nouvelle maison !",
   "I thought my combination was impossible to beat!": "Je croyais que ma combinaison était imbattable !",
   "Hrgh... I'll get better...": "Hrgh... Je vais progresser...",
@@ -417,7 +417,7 @@
   "Well, that's too bad. This place is cool anyway.": "Bah, tant pis. Cet endroit est cool quand même.",
   "Ouch... Shockingly powerful...": "Aïe... Étonnamment puissant...",
   "I can't beat you?! Even now?!": "Je ne peux pas te battre ?! Même maintenant ?!",
-  "AGHHH!! I LOST?! DAMNIT ALL TO HELL. Sorry, heck. Wait, what was going on again? Oh yeah. I lost. DAMNIT. If I don't stop talking this battle won't end-- AMBER STOP--": "ARGH !! J'AI PERDUé ?! FICHTRE ET HONTE. Pardon, zut. Attends, c'était quoi déjà ? Ah oui. J'ai perdu. ZIBELINE. Si j'arrête pas de parler ce combat va pas finir-- AMBER STOP--",
+  "AGHHH!! I LOST?! DAMNIT ALL TO HELL. Sorry, heck. Wait, what was going on again? Oh yeah. I lost. DAMNIT. If I don't stop talking this battle won't end-- AMBER STOP--": "ARGH !! J'AI PERDU ?! FICHTRE ET HONTE. Pardon, zut. Attends, c'était quoi déjà ? Ah oui. J'ai perdu. ZIBELINE. Si j'arrête pas de parler ce combat va pas finir-- AMBER STOP--",
   "Ah... My dream... Crushed by a rando.": "Ah... Mon rêve... Écrasé par un(e) inconnu(e).",
   "Adequate. You pass, for now.": "Correct. Tu passes, pour l'instant.",
   "DREAMMMMM!!!": "REVEEEEE !!!",
@@ -975,5 +975,6 @@
   "My wings... They refuse to fly any further...": "Mes ailes... Elles refusent de voler plus loin...",
   "Is this... it for me?": "Est-ce... la fin pour moi ?",
   "Even with the Pokémon I borrowed from my friends... I couldn't change anything!": "Même avec les Pokémon empruntés à mes amis... Je n'ai rien pu changer !",
-  "My empire... My corruption... It's all fading? After all this? The Interceptor... Zed?! Why? Why?!": "Mon empire... Ma corruption... Tout s'efface ? Après tout cela ? L'Intercepteur... Zed ?! Pourquoi ? Pourquoi ?!"
+  "My empire... My corruption... It's all fading? After all this? The Interceptor... Zed?! Why? Why?!": "Mon empire... Ma corruption... Tout s'efface ? Après tout cela ? L'Intercepteur... Zed ?! Pourquoi ? Pourquoi ?!",
+  ":(...": ":(..."
 }

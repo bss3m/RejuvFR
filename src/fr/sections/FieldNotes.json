@@ -1315,5 +1315,9 @@
   "Scary Face effect <icon=fieldUp,tts=\"boosted\"> <c=green>+1</c>": "Effet de Grimace <icon=fieldUp,tts=\"boosted\"> <c=green>+1</c>",
   "Tar Shot <icon=fieldPlus,tts=\"additionally inflicts the\"> <icon=fieldPoisonStatus>": "Goudronnage <icon=fieldPlus,tts=\"additionally inflicts the\"> <icon=fieldPoisonStatus>",
   "<icon=typeGRASS> Pokémon <icon=fieldPlus,tts=\"restore\"> <c=green>1/16 HP</c> when . . .": "Les Pokémon <icon=typeGRASS> <icon=fieldPlus,tts=\"restore\"> <c=green>1/16 PV</c> quand . . .",
-  "Pastel Veil <icon=fieldPlus,tts=\"gains\"> <c=green>protection</c> . . .": "Voile Pastel <icon=fieldPlus,tts=\"gains\"> <c=green>protection</c> . . ."
+  "Pastel Veil <icon=fieldPlus,tts=\"gains\"> <c=green>protection</c> . . .": "Voile Pastel <icon=fieldPlus,tts=\"gains\"> <c=green>protection</c> . . .",
+  "<icon=typeWATER> attacks <icon=fieldDown> <c=red>x0.5</c>": "Attaques <icon=typeWATER> <icon=fieldDown> <c=red>x0.5</c>",
+  "Certain Abilities <icon=fieldPlus> ignore immunities . . .": "Certains Talents <icon=fieldPlus> ignorent les immunités...",
+  "{abilitiesAnd} ignore Fire Type immunities.": "{abilitiesAnd} ignorent les immunités de type Feu.",
+  "Critical Hits against a side where a Pokémon holds an Amulet Coin will not receive a damage multiplier. Other effects of critical hits still apply.": "Les coups critiques contre un camp où un Pokémon tient une Pièce Rune ne recevront pas de multiplicateur de dégâts. Les autres effets des coups critiques s'appliquent toujours."
 }
