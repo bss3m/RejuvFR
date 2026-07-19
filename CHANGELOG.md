@@ -2,59 +2,59 @@
 
 ## v1.1.3 (2026-07-19)
 
-Reecriture complete de l'updater pour reellement fonctionner.
+Réécriture complète de l'updater pour qu'il fonctionne réellement.
 
-* Fix : l'updater v1.1.2 pouvait telecharger et extraire, mais n'ecrasait pas `messages_fr.dat` a cause du lock Windows tenu par mkxp-z sur ce fichier pendant l'execution.
-* Solution : extraction dans un dossier de staging temporaire `.rejuvfr_update/`, puis spawn d'un script `.rejuvfr_apply.bat` detache qui attend 3 secondes que le jeu se ferme, deplace les fichiers via `robocopy` (comme le fait l'Updater officiel de Rejuvenation pour la mise a jour du moteur), puis se supprime.
-* Fix : le spawn detache utilise maintenant `cmd.exe /c` avec chemins absolus pour ne pas dependre du repertoire de travail.
-* Ce flow a ete teste en local en simulant le lock Windows et fonctionne bout a bout : detection, download avec redirection HTTPS -> CDN, extraction, application, redemarrage automatique via `exit!`.
+* Fix : l'updater v1.1.2 pouvait télécharger et extraire, mais n'écrasait pas `messages_fr.dat` à cause du lock Windows tenu par mkxp-z sur ce fichier pendant l'exécution.
+* Solution : extraction dans un dossier de staging temporaire `.rejuvfr_update/`, puis spawn d'un script `.rejuvfr_apply.bat` détaché qui attend 3 secondes que le jeu se ferme, déplace les fichiers via `robocopy` (comme le fait l'Updater officiel de Rejuvenation pour la mise à jour du moteur), puis se supprime.
+* Fix : le spawn détaché utilise maintenant `cmd.exe /c` avec chemins absolus pour ne pas dépendre du répertoire de travail.
+* Ce flow a été testé en local en simulant le lock Windows et fonctionne bout à bout : détection, download avec redirection HTTPS → CDN, extraction, application, redémarrage automatique via `exit!`.
 
 ## v1.1.2 (2026-07-19)
 
 Correctifs sur l'updater in-game :
 
-* Fix : le telechargement automatique plantait avec `NoMethodError` chez certains utilisateurs. La gestion des redirections HTTP a ete reecrite (recursion au lieu de manipuler `http.start`/`http.finish` en cours de bloc, qui causait des etats invalides quand GitHub redirigeait le zip vers son CDN).
-* Fix : ajout d'un wrapper `rejuvfr_safe_message` qui teste plusieurs alternatives pour `Kernel.pbMessage`. Aucun `NoMethodError` meme si l'API varie legerement selon la version du moteur.
-* Fix : tous les textes du prompt sont maintenant en dur en francais au lieu de passer par `_INTL`, qui n'est parfois pas encore charge quand la notification est declenchee.
-* Ajout d'un log de debug dans `patch/.rejuvfr_updater.log` pour tracer les eventuelles erreurs de detection / telechargement / extraction.
+* Fix : le téléchargement automatique plantait avec `NoMethodError` chez certains utilisateurs. La gestion des redirections HTTP a été réécrite (récursion au lieu de manipuler `http.start` / `http.finish` en cours de bloc, qui causait des états invalides quand GitHub redirigeait le zip vers son CDN).
+* Fix : ajout d'un wrapper `rejuvfr_safe_message` qui teste plusieurs alternatives pour `Kernel.pbMessage`. Aucun `NoMethodError` même si l'API varie légèrement selon la version du moteur.
+* Fix : tous les textes du prompt sont maintenant en dur en français au lieu de passer par `_INTL`, qui n'est parfois pas encore chargé quand la notification est déclenchée.
+* Ajout d'un log de debug dans `patch/.rejuvfr_updater.log` pour tracer les éventuelles erreurs de détection / téléchargement / extraction.
 
 ## v1.1.1 (2026-07-19)
 
 Correctifs de terminologie officielle FR :
 
-* **Talent "Flash Fire"** : "Flash Feu" corrigé en **"Torche"** (nom officiel depuis Gen 6).
+* **Talent "Flash Fire"** : "Flash Feu" corrigé en **"Torche"** (nom officiel depuis la Gen 6).
 * **Capacité "Cut"** : "Couper" corrigé en **"Coupe"** (nom officiel de la CS).
 * **Capacité "Flash"** : "Lumière" corrigé en **"Flash"** (nom officiel de la CS et de l'attaque).
-* Environ 20 occurrences corrigées à travers les descriptions, notes de terrain et dialogues NPC (`utilise Lumière` -> `utilise Flash`, etc.).
+* Environ 20 occurrences corrigées à travers les descriptions, notes de terrain et dialogues NPC (`utilise Lumière` → `utilise Flash`, etc.).
 
 ## v1.1.0 (2026-07-19)
 
 Cible : **Rejuvenation 14.0.6**.
 
-### Nouveautes / New features
+### Nouveautés
 
-* **Selection du genre du personnage** au moment de choisir "Francais". Le choix (masculin / feminin) est sauvegarde dans `Saved Games/Rejuv/french_gender.dat` et persiste entre redemarrages. Les 2849 marqueurs d'accord `(e)`, `(euse)`, `(trice)`, `(elle)`, `(ere)`... sont resolus automatiquement dans tous les dialogues qui s'adressent au joueur.
-* **Mise a jour in-game** : au chargement d'une partie, le mod verifie s'il existe une nouvelle version sur GitHub Releases. Si oui, il propose de la telecharger et de l'installer directement (comme le fait le systeme officiel Updater de Rejuvenation), puis relance le jeu.
+* **Sélection du genre du personnage** au moment de choisir "Français". Le choix (masculin / féminin) est sauvegardé dans `Saved Games/Rejuv/french_gender.dat` et persiste entre redémarrages. Les 2849 marqueurs d'accord `(e)`, `(euse)`, `(trice)`, `(elle)`, `(ère)`... sont résolus automatiquement dans tous les dialogues qui s'adressent au joueur.
+* **Mise à jour in-game** : au chargement d'une partie, le mod vérifie s'il existe une nouvelle version sur GitHub Releases. Si oui, il propose de la télécharger et de l'installer directement (comme le fait le système officiel Updater de Rejuvenation), puis relance le jeu.
 
 ### Corrections critiques
 
-* **Mots de passe story preserves en anglais**. `PASSWORD: UNBOUND` et `PASSWORD: SOUL` avaient ete traduits (`DECHAINE` / `AME`), rendant les enigmes impossibles a resoudre. Les mots de passe cheat de `passwordtext.rb` (mintyfresh, casspack, easymode, etc.) sont egalement verifies.
-* **La langue francaise est desormais conservee au redemarrage**. Avant, `pbLoadLanguage` etait appele au boot avec `LANGUAGES = {}`, ce qui reinitialisait le jeu en anglais. Un hook sur `pbLoadLanguage` reinjecte la constante avant chaque resolution.
+* **Mots de passe story préservés en anglais**. `PASSWORD: UNBOUND` et `PASSWORD: SOUL` avaient été traduits (`DECHAINE` / `AME`), rendant les énigmes impossibles à résoudre. Les mots de passe cheat de `passwordtext.rb` (mintyfresh, casspack, easymode, etc.) sont également vérifiés.
+* **La langue française est désormais conservée au redémarrage**. Avant, `pbLoadLanguage` était appelé au boot avec `LANGUAGES = {}`, ce qui réinitialisait le jeu en anglais. Un hook sur `pbLoadLanguage` réinjecte la constante avant chaque résolution.
 
 ### Fixes
 
-* **1188 nouvelles traductions** injectees pour la mise a jour 14.0.6 (680 noms de dresseurs, 333 noms Battle Tower, ~175 dialogues et scripts).
-* **Timburr = Charpenti** (etait errone en "Trompignon", qui est Foongus).
-* **Jeu de mot "Sea you"** refait proprement en francais : `On se voit MERcredi. Tu piges ? MER - credi`.
-* **Allongement moqueur "a litttleeee paranoid"** rendu en `un touuut ptiiit peu parano` (etait `uuuun tiiiiout peu parano`, cassait la moquerie).
-* **7 residus "PERDUe"** (majuscules) fixes en "PERDU".
-* **155 occurrences de "POKeMON"** corrigees en "POKEMON".
-* **"sur(e) scene"** -> **"sur scene"** (Alexandra, Map638).
-* **Idiomes "on fire"** re-traduits en francais familier : 10 lignes, "je vois que t'es chaud", "T'es chaud !", etc.
-* **"practice round"** -> "echauffement" (etait "juste un repetition").
-* **Erreurs de traduction diverses** ("coupable" -> "coupe" pour l'arbre a couper, etc.).
-* **`_MAPINTL` hook** ajoute pour couvrir les dialogues d'events RPG Maker XP (qui ne passaient pas par le hook `_INTL`).
-* **`french_battle_messages.rb` etendu** : fallback vers `:FieldMessages`, `:AceSpeech`, `:EndSpeechLose` en plus de `:ScriptTexts` pour recuperer les traductions stockees dans le mauvais bucket.
+* **1188 nouvelles traductions** injectées pour la mise à jour 14.0.6 (680 noms de dresseurs, 333 noms Battle Tower, ~175 dialogues et scripts).
+* **Timburr = Charpenti** (était erroné en "Trompignon", qui est Foongus).
+* **Jeu de mot "Sea you"** refait proprement en français : `On se voit MERcredi. Tu piges ? MER - credi`.
+* **Allongement moqueur "a litttleeee paranoid"** rendu en `un touuut ptiiit peu parano` (était `uuuun tiiiiout peu parano`, cassait la moquerie).
+* **7 résidus "PERDUé"** (majuscules) corrigés en "PERDU".
+* **155 occurrences de "POKéMON"** corrigées en "POKÉMON".
+* **"sûr(e) scène"** → **"sur scène"** (Alexandra, Map638).
+* **Idiomes "on fire"** re-traduits en français familier : 10 lignes, "je vois que t'es chaud", "T'es chaud !", etc.
+* **"practice round"** → "échauffement" (était "juste un répétition").
+* **Erreurs de traduction diverses** ("coupable" → "coupé" pour l'arbre à couper, etc.).
+* **`_MAPINTL` hook** ajouté pour couvrir les dialogues d'events RPG Maker XP (qui ne passaient pas par le hook `_INTL`).
+* **`french_battle_messages.rb` étendu** : fallback vers `:FieldMessages`, `:AceSpeech`, `:EndSpeechLose` en plus de `:ScriptTexts` pour récupérer les traductions stockées dans le mauvais bucket.
 
 ## v1.0.12 (2026-07-17)
 
