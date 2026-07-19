@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.9 (2026-07-19)
+
+* Fix : dans les 9 cartes du jeu utilisant la police rétro Gen 1 (`PKMN RBYGSC.ttf`), les caractères `è`, `à`, `ê`, `î`, `ô`, `ù`, `û` et `œ` s'affichaient comme des carrés vides car la police ne contient pas ces glyphes. **720 caractères remplacés** par leurs équivalents supportés (`è` → `é`, `à` → `a`, `ê` → `e`, etc.) dans les cartes concernées : Map293, 340, 366, 379, 394, 460, 521, 642, 673.
+* Le texte « as les pièces pour te les payer » devient « as les piéces pour te les payer » (le `é` est visuellement acceptable, contrairement au carré).
+
+Merci à **Lavril** pour le signalement.
+
 ## v1.1.8 (2026-07-19)
 
 * Fix : ~40 descriptions d'attaques (moves) trop longues raccourcies, dont **CT94 Éclate-Roc** (signalé par Tench) : « Le lanceur attaque d'un coup de poing. Peut baisser la Défense de la cible. Permet aussi de briser des rochers sur le terrain. » → « Le lanceur frappe d'un poing. Peut baisser la Défense. Brise aussi les rochers sur le terrain. »
