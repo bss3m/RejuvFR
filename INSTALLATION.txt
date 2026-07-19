@@ -1,9 +1,24 @@
+INSTALLATION (30 secondes)
+
+1. Télécharge le zip RejuvFR depuis la page Releases.
+2. Extrais-le à la racine du dossier de jeu (celui qui contient Rejuvenation.exe).
+   Le dossier "patch" du zip fusionne avec celui déjà présent.
+3. Lance Rejuvenation.exe.
+4. Menu principal -> Language -> Français.
+5. Choisis le genre de ton personnage (masculin / féminin). Ce choix est mémorisé.
+
+Tu peux revenir à l'anglais à tout moment via Language -> English.
+Tes sauvegardes ne sont pas modifiées.
+
+---
+
 INSTALLATION (30 seconds)
 
-1. Download RejuvenationFR-1.0.zip from the Releases page.
-2. Extract it at the root of your game folder (where Rejuvenation.exe lives).
+1. Download the RejuvFR zip from the Releases page.
+2. Extract at the root of your game folder (the one with Rejuvenation.exe).
    The "patch" folder from the zip merges with the existing one.
 3. Launch Rejuvenation.exe.
 4. Main menu -> Language -> Français.
+5. Pick your character's gender (masculin / féminin). Choice is saved.
 
-Switch back to English anytime via Language -> English. Saves are safe.
+Switch back to English anytime via Language -> English. Save files are safe.
