@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.7 (2026-07-19)
+
+* Fix : ~40 descriptions d'items débordaient encore la boîte d'affichage. Raccourcies sans perdre le sens : Miel, Sombre Ball, canne à pêche high-tech, lunettes Choix, ROM Élektrik, Étiquette Spectre, Danse Attaque/Défense, Reliques d'ancienne civilisation, engrais, Théière fêlée, cassette d'audition de Melia, etc.
+* Fix : description de la capacité **Poison Croix** raccourcie (« Une taillade avec des lames pouvant laisser la cible empoisonnée » — on retire le premier « empoisonnées » qui faisait doublon).
+* Fix : **Ariados Crest** est désormais traduit en **« Emblème Migalos »** (pas « Crête Migalos »).
+
+Merci à **Tench** pour les signalements.
+
 ## v1.1.6 (2026-07-19)
 
 * **Descriptions officielles Poképédia** pour les 18 Joyaux de type (Feu, Eau, Électrik, Plante, Glace, Combat, Poison, Sol, Vol, Psy, Insecte, Roche, Spectre, Dragon, Ténèbres, Acier, Normal, Fée) : « Objet à tenir. Joyau augmentant une fois la puissance des capacités de type X. » (~80 caractères, canon FR).
