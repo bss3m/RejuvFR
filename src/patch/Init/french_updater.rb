@@ -263,7 +263,9 @@ def rejuvfr_prompt_and_apply(info)
     rejuvfr_mark_notified(latest)
     return
   end
-  rejuvfr_safe_message("Téléchargement en cours...\nCela peut prendre quelques secondes.")
+  # Pas de message "en cours" : Kernel.pbMessage bloque en attendant une
+  # touche, ce qui piegeait l'utilisateur. Le fetch/extract prend quelques
+  # secondes, on affiche uniquement le resultat final.
   unless rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
     rejuvfr_safe_message("Le téléchargement a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
     return
