@@ -10,7 +10,7 @@
 # locks Windows qui empechent d'ecraser messages_fr.dat pendant l'execution.
 # C'est le meme pattern que l'Updater officiel de Rejuvenation.
 
-REJUVFR_VERSION = "1.1.5"
+REJUVFR_VERSION = "1.1.6"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
@@ -19,6 +19,7 @@ REJUVFR_LOG_PATH = "patch/.rejuvfr_updater.log"
 REJUVFR_ZIP_TMP = "patch/.rejuvfr_download.zip"
 REJUVFR_STAGING_DIR = ".rejuvfr_update"
 REJUVFR_APPLY_BAT = ".rejuvfr_apply.bat"
+REJUVFR_APPLY_VBS = ".rejuvfr_apply.vbs"
 
 $rejuvfr_update_info = nil
 
@@ -172,6 +173,7 @@ def rejuvfr_write_apply_bat(staging_dir, bat_path)
   staging_abs = File.expand_path(staging_dir)
   zip_abs = File.expand_path(REJUVFR_ZIP_TMP)
   patch_abs = File.expand_path("patch")
+  vbs_abs = File.expand_path(REJUVFR_APPLY_VBS)
 
   content = <<~BAT
     @echo off
@@ -182,10 +184,7 @@ def rejuvfr_write_apply_bat(staging_dir, bat_path)
     rem Attendre que le jeu se ferme pour liberer les locks sur patch/
     timeout /t 3 /nobreak >nul 2>&1
 
-    if not exist "#{staging_abs}\\patch" (
-      echo [RejuvFR] Staging directory missing.
-      goto :end
-    )
+    if not exist "#{staging_abs}\\patch" goto :end
 
     rem Copier les fichiers du staging vers patch/ (ecrase les existants)
     robocopy "#{staging_abs}\\patch" "#{patch_abs}" /E /R:5 /W:2 /NFL /NDL /NJH /NJS >nul 2>&1
@@ -201,12 +200,37 @@ def rejuvfr_write_apply_bat(staging_dir, bat_path)
     if exist "#{game_dir}\\Rejuvenation.exe" (
       start "" "#{game_dir}\\Rejuvenation.exe"
     )
+    rem Supprimer le vbs wrapper puis se supprimer soi-meme
+    if exist "#{vbs_abs}" del /Q "#{vbs_abs}" 2>nul
     del "%~f0"
   BAT
   File.write(bat_path, content)
   true
 rescue => e
   rejuvfr_log("Write bat failed: #{e.class}: #{e.message}")
+  false
+end
+
+# --- Wrapper VBScript pour lancer le .bat en mode masqu\xC3\xA9 (pas de fenetre CMD) ---
+# On genere un .vbs de 3 lignes qui invoque le .bat via WScript.Shell.Run
+# avec le flag intWindowStyle = 0 (fenetre invisible). Le .bat lui-meme fait
+# tout le travail (attente 3s, robocopy, cleanup) sans jamais afficher de
+# console. Compatible Windows XP a Windows 11.
+
+def rejuvfr_write_apply_vbs(bat_path, vbs_path)
+  bat_abs = File.expand_path(bat_path)
+  # WScript.Shell.Run(command, intWindowStyle, bWaitOnReturn)
+  # intWindowStyle = 0 -> fenetre cachee
+  # bWaitOnReturn = False -> ne pas attendre la fin
+  content = <<~VBS
+    Set objShell = CreateObject("WScript.Shell")
+    objShell.Run """#{bat_abs}""", 0, False
+    Set objShell = Nothing
+  VBS
+  File.write(vbs_path, content)
+  true
+rescue => e
+  rejuvfr_log("Write vbs failed: #{e.class}: #{e.message}")
   false
 end
 
@@ -252,16 +276,21 @@ def rejuvfr_prompt_and_apply(info)
     rejuvfr_safe_message("Impossible de préparer l'installation.\nRendez-vous sur :\n#{REJUVFR_URL}")
     return
   end
-  # Spawn detache du batch. Sur Windows, on invoque explicitement cmd.exe /c
-  # pour que le process soit correctement lance en mode detache.
+  unless rejuvfr_write_apply_vbs(REJUVFR_APPLY_BAT, REJUVFR_APPLY_VBS)
+    rejuvfr_safe_message("Impossible de préparer l'installation.\nRendez-vous sur :\n#{REJUVFR_URL}")
+    return
+  end
+  # Spawn detache du wrapper VBScript qui lancera le .bat en mode masque
+  # (aucune fenetre CMD visible). Le vbs se contente d'appeler le bat via
+  # WScript.Shell.Run(cmd, 0, false) puis se termine immediatement.
   begin
-    bat_abs = File.expand_path(REJUVFR_APPLY_BAT)
+    vbs_abs = File.expand_path(REJUVFR_APPLY_VBS)
     if defined?(spawn) && Process.respond_to?(:detach)
-      pid = spawn("cmd.exe", "/c", bat_abs, [:out, :err] => [REJUVFR_LOG_PATH, "a"])
+      pid = spawn("wscript.exe", vbs_abs, [:out, :err] => [REJUVFR_LOG_PATH, "a"])
       Process.detach(pid)
     else
       # Fallback : system + start (bloque brievement mais fonctionne)
-      system("start \"\" /B cmd.exe /c \"#{bat_abs}\"")
+      system("wscript.exe \"#{vbs_abs}\"")
     end
     rejuvfr_mark_notified(latest)
     rejuvfr_safe_message("Mise à jour prête !\nLe jeu va se fermer.\nIl se relancera automatiquement dans quelques secondes.")

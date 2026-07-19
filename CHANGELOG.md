@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.6 (2026-07-19)
+
+* **Descriptions officielles Poképédia** pour les 18 Joyaux de type (Feu, Eau, Électrik, Plante, Glace, Combat, Poison, Sol, Vol, Psy, Insecte, Roche, Spectre, Dragon, Ténèbres, Acier, Normal, Fée) : « Objet à tenir. Joyau augmentant une fois la puissance des capacités de type X. » (~80 caractères, canon FR).
+* **Feuille Copieuse** (Mirror Herb) : description officielle Poképédia.
+* **Fix : la fenêtre CMD ne s'affiche plus** pendant l'installation de la mise à jour. L'updater passe désormais par un wrapper VBScript (`.rejuvfr_apply.vbs`) qui invoque le `.bat` via `WScript.Shell.Run(cmd, 0, false)` — le processus tourne en arrière-plan totalement invisible. Compatible Windows XP à Windows 11.
+
 ## v1.1.5 (2026-07-19)
 
 Descriptions d'objets raccourcies pour tenir en 3 lignes maximum :
