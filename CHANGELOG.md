@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.1 (2026-07-19)
+
+Correctifs de terminologie officielle FR :
+
+* **Talent "Flash Fire"** : "Flash Feu" corrigé en **"Torche"** (nom officiel depuis Gen 6).
+* **Capacité "Cut"** : "Couper" corrigé en **"Coupe"** (nom officiel de la CS).
+* **Capacité "Flash"** : "Lumière" corrigé en **"Flash"** (nom officiel de la CS et de l'attaque).
+* Environ 20 occurrences corrigées à travers les descriptions, notes de terrain et dialogues NPC (`utilise Lumière` -> `utilise Flash`, etc.).
+
 ## v1.1.0 (2026-07-19)
 
 Cible : **Rejuvenation 14.0.6**.

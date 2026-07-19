@@ -1161,7 +1161,7 @@
   "Dry Skin <icon=fieldPlus,tts=\"restores\"> <c=green>1/16 HP</c> each turn": "Peau Sèche <icon=fieldPlus,tts=\"restores\"> <c=green>1/16 PV</c> à chaque tour",
   "Secret Power effect <icon=fieldChange> Sp.Atk <icon=fieldDown,tts=\"lowered by one stage\">": "Effet de Force Cachée <icon=fieldChange> Atq. Spé. <icon=fieldDown,tts=\"lowered by one stage\">",
   "Certain attacks <icon=fieldPlus,tts=\"gain the\"> <icon=typeDARK> . . .": "Certaines attaques <icon=fieldPlus,tts=\"gain the\"> <icon=typeDARK> . . .",
-  "Flash's effect <icon=fieldUp,tts=\"boosted\"> <c=green>+1</c>": "Effet de Lumière <icon=fieldUp,tts=\"boosted\"> <c=green>+1</c>",
+  "Flash's effect <icon=fieldUp,tts=\"boosted\"> <c=green>+1</c>": "Effet de Flash <icon=fieldUp,tts=\"boosted\"> <c=green>+1</c>",
   "Synthesis/Morning Sun <icon=fieldChange,tts=\"recovery changes to\"> <c=red>25 % HP</c>": "Synthèse/Aurore <icon=fieldChange,tts=\"recovery changes to\"> <c=red>25 % PV</c>",
   "Secret Power effect <icon=fieldChange> Accuracy <icon=fieldDown,tts=\"lowered by one stage\">": "Effet de Force Cachée <icon=fieldChange> Précision <icon=fieldDown,tts=\"lowered by one stage\">",
   "<c=orange>Pawn</c> - <icon=fieldPlus,tts=\"gains\"> Focus Sash's effect": "<c=orange>Pion</c> - <icon=fieldPlus,tts=\"gains\"> effet de la Ceinture Force",

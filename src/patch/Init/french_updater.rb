@@ -7,7 +7,7 @@
 #
 # Aucune ecriture n'est faite tant que l'utilisateur n'a pas accepte.
 
-REJUVFR_VERSION = "1.1.0"
+REJUVFR_VERSION = "1.1.1"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
