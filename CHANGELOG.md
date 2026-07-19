@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.8 (2026-07-19)
+
+* Fix : ~40 descriptions d'attaques (moves) trop longues raccourcies, dont **CT94 Éclate-Roc** (signalé par Tench) : « Le lanceur attaque d'un coup de poing. Peut baisser la Défense de la cible. Permet aussi de briser des rochers sur le terrain. » → « Le lanceur frappe d'un poing. Peut baisser la Défense. Brise aussi les rochers sur le terrain. »
+* Cibles corrigées : Rock Smash, Bind, Gear Grind, Wave Crash, Aura Wheel, Jungle Healing, Meteor Assault, Snipe Shot, Behemoth Blade/Bash, Fishious Rend, Terrain Pulse, Sandstorm Wall, Snow Wall, Moongeist Beam, Electro Shot, Blood Moon, Cross Poison, et une trentaine d'autres.
+
+Merci à **Tench** pour le signalement.
+
 ## v1.1.7 (2026-07-19)
 
 * Fix : ~40 descriptions d'items débordaient encore la boîte d'affichage. Raccourcies sans perdre le sens : Miel, Sombre Ball, canne à pêche high-tech, lunettes Choix, ROM Élektrik, Étiquette Spectre, Danse Attaque/Défense, Reliques d'ancienne civilisation, engrais, Théière fêlée, cassette d'audition de Melia, etc.
