@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.11 (2026-07-20)
+
+Support **JoiPlay et Kirin (Android)** :
+
+* Le mod fonctionne désormais sur JoiPlay / Kirin sans planter. L'auto-updater est automatiquement désactivé sur ces environnements (ils n'ont ni `Net::HTTP` ni `cmd.exe`/`robocopy` pour appliquer un patch en tâche de fond).
+* Sur mobile, les utilisateurs doivent télécharger manuellement chaque nouvelle version depuis GitHub Releases.
+* Toutes les autres fonctionnalités sont préservées : traductions, sélection du genre, résolution automatique des accords, hooks des messages de combat, etc.
+
 ## v1.1.10 (2026-07-20)
 
 * Fix : « j'arriverai plus vite qu'un **Bidoof** peut dire **Bidoof~** ! » → « j'arriverai plus vite qu'un **Keunotor** peut dire **Neutor~** ! » (Map298). Les noms de Pokémon FR officiels avaient été laissés en anglais dans cette ligne.

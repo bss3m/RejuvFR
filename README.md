@@ -4,7 +4,7 @@ Traduction française non-officielle de **Pokémon Rejuvenation 14.0.6**.
 
 ## Téléchargement
 
-Dernière version : [**RejuvFR_v1.1.10.zip**](https://github.com/bss3m/RejuvFR/releases/latest) (~6 Mo)
+Dernière version : [**RejuvFR_v1.1.11.zip**](https://github.com/bss3m/RejuvFR/releases/latest) (~6 Mo)
 
 ## Installation
 
@@ -26,6 +26,7 @@ Le mod vérifie discrètement si une nouvelle version est disponible au chargeme
 ## Compatibilité
 
 * Testé sur **Rejuvenation 14.0.6 (Windows)**.
+* Compatible **JoiPlay et Kirin** (Android). L'auto-updater est désactivé sur ces environnements, les mises à jour doivent être installées manuellement.
 * Incompatible avec 13.5 (format interne différent).
 * Entièrement conforme au système de mods officiel décrit dans `Modding.txt` et `Scripts/.translation.txt` du jeu : aucun fichier de base n'est modifié. Tout est dans `patch/`.
 * Les sauvegardes ne sont pas affectées.

@@ -10,7 +10,7 @@
 # locks Windows qui empechent d'ecraser messages_fr.dat pendant l'execution.
 # C'est le meme pattern que l'Updater officiel de Rejuvenation.
 
-REJUVFR_VERSION = "1.1.10"
+REJUVFR_VERSION = "1.1.11"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
@@ -49,6 +49,17 @@ rescue
 end
 
 # --- Detection ---
+#
+# Auto-updater desactive sur JoiPlay / Kirin (mobile) : ces environnements
+# n'ont pas net/http ni cmd.exe/robocopy pour appliquer le patch. Les
+# utilisateurs mobiles doivent telecharger la mise a jour manuellement
+# depuis GitHub Releases. Le hook Scene_Map plus bas reste actif mais ne
+# fera rien tant que $rejuvfr_update_info reste nil (cas mobile).
+
+REJUVFR_ON_MOBILE = (defined?($joiplay) && $joiplay) || (defined?($kirin) && $kirin)
+if REJUVFR_ON_MOBILE
+  rejuvfr_log("Auto-updater desactive (JoiPlay/Kirin)")
+else
 
 Thread.new do
   begin
@@ -81,6 +92,8 @@ Thread.new do
     rejuvfr_log("Detection failed: #{e.class}: #{e.message}")
   end
 end
+
+end  # fin du if !REJUVFR_ON_MOBILE (thread detection desactive sur mobile)
 
 # --- Telechargement (redirections par recursion) ---
 
