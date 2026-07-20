@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.12 (2026-07-20)
+
+* Fix : 4 phrases utilisaient le conditionnel présent (`-rais`) alors que la version anglaise est au futur (`will` / `won't`). Corrigées en futur simple (`-rai`) :
+  * Map392 : « Je ne reculerais pas ! » → « Je ne reculerai pas ! » (`I won't back down`)
+  * Map400 : « Je ne raterais ça pour rien au monde ! » → « Je ne raterai ça pour rien au monde ! » (`I won't miss this`)
+  * Map209 : « Tu ne penses pas que je serais un bon candidat » → « je serai un bon candidat » (`I'll be a good fit`)
+  * BattleTowerIntroSpeech : « je gagnerais aujourd'hui » → « je gagnerai aujourd'hui » (`I will win today`)
+
 ## v1.1.11 (2026-07-20)
 
 Support **JoiPlay et Kirin (Android)** :

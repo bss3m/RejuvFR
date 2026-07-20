@@ -10,7 +10,7 @@
 # locks Windows qui empechent d'ecraser messages_fr.dat pendant l'execution.
 # C'est le meme pattern que l'Updater officiel de Rejuvenation.
 
-REJUVFR_VERSION = "1.1.11"
+REJUVFR_VERSION = "1.1.12"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
