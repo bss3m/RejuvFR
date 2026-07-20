@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.10 (2026-07-20)
+
+* Fix : « j'arriverai plus vite qu'un **Bidoof** peut dire **Bidoof~** ! » → « j'arriverai plus vite qu'un **Keunotor** peut dire **Neutor~** ! » (Map298). Les noms de Pokémon FR officiels avaient été laissés en anglais dans cette ligne.
+
+Merci à **Lavril** pour le signalement.
+
 ## v1.1.9 (2026-07-19)
 
 * Fix : dans les 9 cartes du jeu utilisant la police rétro Gen 1 (`PKMN RBYGSC.ttf`), les caractères `è`, `à`, `ê`, `î`, `ô`, `ù`, `û` et `œ` s'affichaient comme des carrés vides car la police ne contient pas ces glyphes. **720 caractères remplacés** par leurs équivalents supportés (`è` → `é`, `à` → `a`, `ê` → `e`, etc.) dans les cartes concernées : Map293, 340, 366, 379, 394, 460, 521, 642, 673.
