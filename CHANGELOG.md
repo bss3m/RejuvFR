@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.15 (2026-07-22)
+
+* Fix Map418 (KARRINA + coffre du puzzle Méga-Pierres) : les noms Pokémon et Méga-Pierres étaient incorrects.
+  * « une Banettite » → **« une Branettite »** (Banette = Branette en FR).
+  * « une Scarhexite » → **« une Scarhinoïte »** (Heracross = Scarhino, avec tréma sur le i).
+  * « une pour Branette et une pour Scarhex » → **« une pour Branette et une pour Scarhino »**.
+  * Choix du coffre : « Banettite ! » → **« Branettite ! »** et « Scarhexite ! » → **« Scarhinoïte ! »**.
+
 ## v1.1.14 (2026-07-22)
 
 * Fix : le caractère `ç` / `Ç` s'affichait comme un carré vide dans les 8 cartes utilisant la police rétro Gen 1 (`PKMN RBYGSC.ttf`) — la police ne contient pas ce glyphe, contrairement à ce que la v1.1.9 supposait. **107 cédilles remplacées** par leurs équivalents `c` / `C` dans les cartes `ATEBITMAPS` : Map293, 340, 366, 379, 394, 460, 521, 673. Exemple : « Ça veut dire qu'ALICE est un Zarbi ? » → « Ca veut dire qu'ALICE est un Zarbi ? » (Map293).
