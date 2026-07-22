@@ -1,5 +1,43 @@
 # Changelog
 
+## v1.1.13 (2026-07-22)
+
+**Fix critique de crash + refonte des Emblèmes de type + support Linux/macOS.**
+
+### Bugs bloquants
+
+* Fix : dans Map293, deux lignes du dialogue d'Amber (ex-ALICE) crashaient le jeu en français avec `Errno::ENOENT: File Audio/SE/402cry not found`. Le fichier réel s'appelle `402Cry.wav` (C majuscule) — le lookup était strict sur la casse. La référence FR `\se[402cry]` devient `\se[402Cry]`. Le dialogue est à nouveau franchissable.
+
+### Traductions Pokémon / attaques
+
+* Fix Map234 (VENAM) et Map249 (KANON) : « Salamence » traduit en « Salamèche » (Charmander !) est corrigé en **Drattak** (nom FR officiel de Salamence).
+* Fix Map250 : « Tangrowth's Power Whip » traduit en « Fouet Lianes d'un Tissenbulle » est corrigé en **Mégafouet d'un Bouldeneu** (deux lignes du réveil d'Anathea).
+* Fix Map097 + Map217 : 16 occurrences de « Poliwag » restées en anglais sont remplacées par **Ptitard**, y compris les cris `POLIWAG: Poliwag !` → `PTITARD: Ptitard !` et les speaker labels.
+
+### Refonte « Crête » → « Emblème »
+
+* Uniformisation des 108 items Crest de Rejuvenation : tous les `Crête X` deviennent `Emblème X` (cohérence avec `Emblème Migalos` fixé en v1.1.7). Fichiers touchés : `Items.json` (64), `ItemPlurals.json` (44), `07_Items.json` (45).
+* Fix des références dans les dialogues : Map347 (Crête Morphéo → Emblème Morphéo), Map422 (Cette Crête Kaorine, une Crête Torterra, cette Crête), Map516 (plus de Crêtes → plus d'Emblèmes), Map603 (une Crête Spiritomb → un Emblème Spiritomb). Accord de genre corrigé (Emblème est masculin).
+
+### Autres corrections
+
+* Fix Map333 : « Y a un espèce de bizarre » (grammaire cassée, `espèce` est féminin) → **« Y a un mec bizarre »** (2 lignes AMBER + TESLA).
+* Fix Map413 (TESLA) : « Il n'y a rien à apologi- » (fragment d'anglais) → **« Il n'y a pas à t'excus- »**.
+* Fix Map415 : « That must really suck » traduit en « Ça doit vraiment sucer » (littéral erroné) → **« Ça doit vraiment être de la merde »**.
+* Fix Map415 : ligne « Waouh t'es courageux(se), \PN. Pas du tout fou(folle) ou quoi que ce soit ! » reformulée pour éviter le marqueur `fou(folle)` qui ne se résolvait pas.
+* Fix Map234 : « Je ne deviens pas fou(folle), hein ? » (locuteur féminin) → **« Je ne deviens pas folle, hein ? »** (résolution directe puisque le locuteur n'est pas le joueur).
+* Fix Map270 : « Pool Party mais avec du fun » → **« Pool Party, mais amusante »**.
+* Fix Map516 (ARCHÉOLOGUE) : « plus de Crêtes quelque part » → « plus d'Emblèmes quelque part » (cohérence avec la refonte).
+
+### Cross-platform
+
+* **Support Linux et macOS** : l'auto-updater détecte désormais la plateforme via `RUBY_PLATFORM` et génère un `.sh` POSIX (`sleep 3` → `cp -Rf` → cleanup → relance via `mkxp-z` / `mkxp-z.app`) au lieu du `.bat`+`.vbs`+`robocopy`+`wscript.exe` réservés à Windows. Le `.sh` est écrit en LF pur via `File.binwrite` et lancé en détaché via `nohup sh` + `Process.detach`.
+* Audit de casse des références audio (`\se[...]`, `\me[...]`, `\bgm[...]`, `\bgs[...]`) contre 3576 fichiers indexés : aucun autre mismatch après le fix `402Cry`. Rejuvenation FR est compatible Linux (mkxp-z Linux) sans autre modification.
+
+### Remerciements
+
+* **Justyne88** est ajoutée à la section Remerciements du README pour son travail de traduction des images du jeu (à intégrer dans une prochaine version).
+
 ## v1.1.12 (2026-07-20)
 
 * Fix : 4 phrases utilisaient le conditionnel présent (`-rais`) alors que la version anglaise est au futur (`will` / `won't`). Corrigées en futur simple (`-rai`) :

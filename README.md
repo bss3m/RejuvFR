@@ -57,6 +57,7 @@ Merci aux personnes qui ont contribué en signalant des erreurs, en proposant de
 
 * **Lavril** — retours détaillés sur de nombreuses lignes de dialogue, ponctuation, et cas de genre non résolus.
 * **Tench** — signalement des descriptions d'items trop longues qui débordaient de la boîte d'affichage.
+* **Justyne88** — traduction des images du jeu (à intégrer dans une prochaine version).
 
 Tu veux apparaître ici ? Ouvre une issue ou une PR sur ce dépôt.
 
