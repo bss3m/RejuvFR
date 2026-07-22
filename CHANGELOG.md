@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.14 (2026-07-22)
+
+* Fix : le caractère `ç` / `Ç` s'affichait comme un carré vide dans les 8 cartes utilisant la police rétro Gen 1 (`PKMN RBYGSC.ttf`) — la police ne contient pas ce glyphe, contrairement à ce que la v1.1.9 supposait. **107 cédilles remplacées** par leurs équivalents `c` / `C` dans les cartes `ATEBITMAPS` : Map293, 340, 366, 379, 394, 460, 521, 673. Exemple : « Ça veut dire qu'ALICE est un Zarbi ? » → « Ca veut dire qu'ALICE est un Zarbi ? » (Map293).
+* Note : la casse est préservée (majuscule en début de phrase reste majuscule).
+
 ## v1.1.13 (2026-07-22)
 
 **Fix critique de crash + refonte des Emblèmes de type + support Linux/macOS.**
