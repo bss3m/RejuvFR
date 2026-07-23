@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.17 (2026-07-23)
+
+**Fix critique : crash du menu Quête sur Chapter 11 (12, 15) en FR.**
+
+* Ouvrir la seconde vue du menu Quête (Reward / Quest received from / Expiration) sur Chapter 11 crashait le jeu avec `NoMethodError: undefined method 'rstrip' for nil:NilClass` dans `PBIntl.rb:692`.
+* Cause : `Scripts/Rejuv/Quest/Quest.rb#getQuestReward` fait `QuestModule.const_get(quest)[:RewardString]`. Chapter 11 (ainsi que Chapter 12 et Chapter 15) n'a pas de champ `:RewardString` — la clef est donc `nil`. En anglais `pbGetMessageFromHash` prend une branche tolérante au nil ; en français il crashe sur `key.rstrip`.
+* Fix via nouveau fichier `patch/Mods/french_quest_fix.rb` : wrapper défensif qui garde `nil` avant `pbGetMessageFromHash`. Zéro modification de fichier de base. Débloque aussi Chapter 12 et Chapter 15 si tu tombais dessus.
+
 ## v1.1.16 (2026-07-23)
 
 * Fix Map342 : « Lickitung a été ma merveilleuse petite compagne » → **« Excelangue a été ma merveilleuse petite compagne »** (Lickitung = Excelangue en FR, nom oublié dans une ligne de PNJ du train).
