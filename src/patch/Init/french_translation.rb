@@ -17,10 +17,13 @@
 #    du menu principal.
 # =============================================================================
 
-FR_LANGUAGES = {
-  "English"  => nil,
-  "Francais" => "patch/messages_fr.dat",
-}.freeze
+# Guard contre redefinition (constant warning si reload)
+unless defined?(FR_LANGUAGES)
+  FR_LANGUAGES = {
+    "English"  => nil,
+    "Francais" => "patch/messages_fr.dat",
+  }.freeze
+end
 
 def rejuvfr_inject_languages
   return if Object.const_defined?(:LANGUAGES) && LANGUAGES == FR_LANGUAGES
@@ -75,10 +78,12 @@ end
 # le premier hook.
 Thread.new do
   60.times do
-    break if defined?(PokemonLoad) && PokemonLoad.instance_methods(false).include?(:pbStartLoadScreen)
+    # instance_methods(true) inclut les methodes heritees d'une superclasse
+    # (sinon pbStartLoadScreen defini plus haut dans la hierarchie serait rate)
+    break if defined?(PokemonLoad) && PokemonLoad.instance_methods.include?(:pbStartLoadScreen)
     sleep 0.1
   end
-  next unless defined?(PokemonLoad)
+  next unless defined?(PokemonLoad) && PokemonLoad.instance_methods.include?(:pbStartLoadScreen)
   s = $VERBOSE
   $VERBOSE = nil
   PokemonLoad.class_eval do

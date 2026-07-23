@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.1.22 (2026-07-24)
+
+**Hardening général après review complète des 7 fichiers Ruby du mod.**
+
+Aucun bug critique déclenché en pratique jusqu'ici, mais plusieurs latents fixés préventivement :
+
+* `french_quest_fix.rb` : ajout du pattern `Thread.new + wait defined?()` autour du monkey-patch de `pbGetMessageFromHash`. Sans ça, si notre fichier chargeait avant `PBIntl.rb`, l'alias échouait en `NameError` non-rescué.
+* `french_battle_messages.rb` : ajout du guard `unless method_defined?(:_orig_setField_fr)` sur `alias_method`. Sans ça, un hot-reload aliassait la version déjà hookée → risque de récursion infinie.
+* `french_bosstext.rb` : refactor de `def bossEntryText` (redéfinition brute) vers pattern `alias_method + define_method`. Préserve l'implémentation originale accessible via `_orig_bossEntryText_fr`, évite les conflits avec de futures modifs du jeu de base.
+* `french_translation.rb:78` : `PokemonLoad.instance_methods(false)` → `.instance_methods` (sans `false`). Le `false` excluait les méthodes héritées d'une superclasse — le hook `pbStartLoadScreen` pouvait ne jamais s'installer selon la hiérarchie de classe.
+* `french_translation.rb` : `FR_LANGUAGES` guardée contre redéfinition.
+* `french_gender.rb` : `FR_GENDER_FILE`, `GENDER_SUFFIXES`, `GENDER_MARKER_RE`, `FULL_ALT_RE` toutes guardées contre redéfinition (supprime les warnings sur reload).
+
 ## v1.1.21 (2026-07-24)
 
 * Fix RiftDex : les descriptions/notes en français ne s'affichaient plus (« This being was created by Team Xen Executive Zetta. » restait en anglais).

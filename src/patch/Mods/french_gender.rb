@@ -7,7 +7,7 @@
 # Expose $genre_fr = :M ou :F pour la resolution des accords (e) dans
 # les dialogues qui s'adressent au joueur.
 
-FR_GENDER_FILE = "french_gender.dat"
+FR_GENDER_FILE = "french_gender.dat" unless defined?(FR_GENDER_FILE)
 
 def rejuvfr_gender_path
   RTP.getSaveFileName(FR_GENDER_FILE)
@@ -57,18 +57,21 @@ $genre_fr = rejuvfr_load_gender
 # Liste blanche des suffixes que l'on considere comme des marqueurs de genre.
 # On evite ainsi de manger des balises fonctionnelles comme (SOIN), (Nord),
 # (Kakori), (COPY), (PgUp)... ou des choix d'options entre parentheses.
-GENDER_SUFFIXES = %w[
-  e s se ne le ve te
-  nne lle tte ère ète ïne
-  euse rice trice ière elle
-].freeze
-GENDER_MARKER_RE = /\(([a-zà-ÿA-ZÀ-Ÿ]{1,6})\)/
+# Guard tous les constants contre redefinition
+unless defined?(GENDER_SUFFIXES)
+  GENDER_SUFFIXES = %w[
+    e s se ne le ve te
+    nne lle tte ère ète ïne
+    euse rice trice ière elle
+  ].freeze
+end
+GENDER_MARKER_RE = /\(([a-zà-ÿA-ZÀ-Ÿ]{1,6})\)/ unless defined?(GENDER_MARKER_RE)
 
 # Alternation mot-plein pour les cas ou le suffixe seul ne suffit pas
 # (nouveau/nouvelle, vieil/vieille, dresseur/dresseuse, celui/celle...).
 # Syntaxe : {M:masc|F:fem} -> resolu vers 'masc' ou 'fem' selon le joueur.
 # Compatible avec les balises normales : {M:il|F:elle} etc.
-FULL_ALT_RE = /\{M:([^|}]*)\|F:([^}]*)\}/
+FULL_ALT_RE = /\{M:([^|}]*)\|F:([^}]*)\}/ unless defined?(FULL_ALT_RE)
 
 def rejuvfr_apply_gender(text)
   return text unless text.is_a?(String)

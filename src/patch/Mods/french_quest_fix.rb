@@ -15,16 +15,23 @@
 # On patch pbGetMessageFromHash pour garder nil AVANT d'appeler getFromHash.
 # Aucune modif de fichier de base : simple wrapper defensif.
 
-s = $VERBOSE
-$VERBOSE = nil
-Object.class_eval do
-  unless private_method_defined?(:_orig_pbGetMessageFromHash_frfix) ||
-         method_defined?(:_orig_pbGetMessageFromHash_frfix)
-    alias_method :_orig_pbGetMessageFromHash_frfix, :pbGetMessageFromHash
-    define_method(:pbGetMessageFromHash) do |type, id|
-      return "" if id.nil?
-      _orig_pbGetMessageFromHash_frfix(type, id)
+Thread.new do
+  60.times do
+    break if defined?(pbGetMessageFromHash)
+    sleep 0.1
+  end
+  next unless defined?(pbGetMessageFromHash)
+  s = $VERBOSE
+  $VERBOSE = nil
+  Object.class_eval do
+    unless private_method_defined?(:_orig_pbGetMessageFromHash_frfix) ||
+           method_defined?(:_orig_pbGetMessageFromHash_frfix)
+      alias_method :_orig_pbGetMessageFromHash_frfix, :pbGetMessageFromHash
+      define_method(:pbGetMessageFromHash) do |type, id|
+        return "" if id.nil?
+        _orig_pbGetMessageFromHash_frfix(type, id)
+      end
     end
   end
+  $VERBOSE = s
 end
-$VERBOSE = s

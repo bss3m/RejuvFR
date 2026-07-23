@@ -25,16 +25,35 @@ def _INTL_fr_lookup(msg)
   msg
 end
 
-class PokeBattle_Battle
-  alias_method :_orig_setField_fr, :setField
-  def setField(fieldeffect, temp, message, **kwargs)
-    message = _INTL_fr_lookup(message)
-    _orig_setField_fr(fieldeffect, temp, message, **kwargs)
-  end
+# Hook PokeBattle_Battle avec guard contre double-alias : si le mod est
+# reevalue (hot-reload ou double load), on skip pour eviter d'aliaser une
+# version deja hookee (recursion infinie sinon).
 
-  alias_method :_orig_pbDisplayAutoPaused_fr, :pbDisplayAutoPaused
-  def pbDisplayAutoPaused(msg)
-    msg = _INTL_fr_lookup(msg)
-    _orig_pbDisplayAutoPaused_fr(msg)
+Thread.new do
+  60.times do
+    break if defined?(PokeBattle_Battle) &&
+             PokeBattle_Battle.method_defined?(:setField) &&
+             PokeBattle_Battle.method_defined?(:pbDisplayAutoPaused)
+    sleep 0.1
   end
+  next unless defined?(PokeBattle_Battle)
+  s = $VERBOSE
+  $VERBOSE = nil
+  PokeBattle_Battle.class_eval do
+    unless method_defined?(:_orig_setField_fr)
+      alias_method :_orig_setField_fr, :setField
+      define_method(:setField) do |fieldeffect, temp, message, **kwargs|
+        message = _INTL_fr_lookup(message)
+        _orig_setField_fr(fieldeffect, temp, message, **kwargs)
+      end
+    end
+    unless method_defined?(:_orig_pbDisplayAutoPaused_fr)
+      alias_method :_orig_pbDisplayAutoPaused_fr, :pbDisplayAutoPaused
+      define_method(:pbDisplayAutoPaused) do |msg|
+        msg = _INTL_fr_lookup(msg)
+        _orig_pbDisplayAutoPaused_fr(msg)
+      end
+    end
+  end
+  $VERBOSE = s
 end
