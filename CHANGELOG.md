@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.21 (2026-07-24)
+
+* Fix RiftDex : les descriptions/notes en français ne s'affichaient plus (« This being was created by Team Xen Executive Zetta. » restait en anglais).
+* Cause identifiée : mismatch de whitespace entre le runtime (`_INTL("...\n\n...")` avec double saut de ligne pour séparer les paragraphes) et notre extraction JSON (qui a stocké `\n` simple). `Messages.stringToKey` collapse `\s{2,}` (donc `\n\n`) en un espace simple mais laisse `\n` seul intact — donc l'id de lookup diffère.
+* Fix : le fallback introduit en v1.1.20 utilise désormais une comparaison canonique (tout whitespace collapse en un espace simple des deux côtés) via un index lazy bâti au premier miss. Débloque le RiftDex complet + tout dialogue avec des sauts de ligne dans le source Ruby.
+
 ## v1.1.20 (2026-07-23)
 
 * Fix du fallback introduit en v1.1.19 : le monkey-patch ciblait `MessageTypes.singleton_class` mais accédait à `@messages` comme variable d'instance sur le module, ce qui retournait toujours `nil`. Résultat : le fallback ne s'activait jamais et les traductions dans un mapid ≠ courant restaient invisibles.
