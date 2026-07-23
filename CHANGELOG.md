@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.19 (2026-07-23)
+
+**Fix massif : fallback global de lookup de traduction.**
+
+* De nombreux dialogues avaient leur traduction FR bien présente dans `messages_fr.dat` mais restaient affichés en anglais en jeu. Cas confirmés : « This room is FILLED with those Giratina! » (Map384/505), « This is incredibly stupid... » (Map270), « Neved's room is on the third floor » (Map128), « Ugh, I was so caught up with Aelita... » (Map443), « ODESSA: Hi, \\PN? » (Map336), « SHAYDA: Yes, I see it... » (Map242), « ALEX: And that's the report, sir! » (Map120), et probablement de nombreux autres non signalés.
+* Cause : Rejuvenation 14.0 route certains textes de dialogue via `_INTL()` (qui cherche uniquement dans la section `:ScriptTexts`) au lieu de `_MAPINTL(mapid, ...)` (qui cherche dans le map). D'autres textes sont référencés depuis un `mapid` différent de celui où l'évènement se déclenche. Les deux mécanismes cassent le lookup direct dans `messages_fr.dat`.
+* Fix via nouveau `patch/Mods/french_translation_fallback.rb` : monkey-patch de `MessageTypes.getFromHash` et `getFromMapHash`. Si le lookup direct échoue, le mod scanne l'ensemble du hash (tous les maps + toutes les sections) à la recherche du même id. Retourne la première valeur non-triviale trouvée. Zéro modification de fichier de base.
+* Overhead : négligeable (scan linéaire uniquement sur les strings non-trouvés au premier passage ; le hit-rate reste très élevé).
+
 ## v1.1.18 (2026-07-23)
 
 * **Nouveau : syntaxe `{M:x|F:y}` pour l'alternation mot-plein** dans le résolveur de genre (`patch/Mods/french_gender.rb`). Complémente le marqueur suffixe existant `(e)` pour les cas où le féminin n'est pas juste un suffixe : `nouveau/nouvelle`, `vieil/vieille`, `dresseur/dresseuse`, `celui/celle`, `il/elle`, `lui/elle`, `le/la`. Le résolveur remplace `{M:foo|F:bar}` par `foo` (joueur masculin) ou `bar` (joueur féminin).
