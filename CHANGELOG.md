@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.16 (2026-07-23)
+
+* Fix Map342 : « Lickitung a été ma merveilleuse petite compagne » → **« Excelangue a été ma merveilleuse petite compagne »** (Lickitung = Excelangue en FR, nom oublié dans une ligne de PNJ du train).
+* Fix Map342 : « It's giving me bad vibes » retraduit en **« J'ai de mauvaises vibes »** (au lieu de « Ça me donne de mauvaises vibrations » qui perd le registre familier / slang du texte anglais).
+
 ## v1.1.15 (2026-07-22)
 
 * Fix Map418 (KARRINA + coffre du puzzle Méga-Pierres) : les noms Pokémon et Méga-Pierres étaient incorrects.
