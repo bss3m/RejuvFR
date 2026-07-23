@@ -64,16 +64,25 @@ GENDER_SUFFIXES = %w[
 ].freeze
 GENDER_MARKER_RE = /\(([a-zà-ÿA-ZÀ-Ÿ]{1,6})\)/
 
+# Alternation mot-plein pour les cas ou le suffixe seul ne suffit pas
+# (nouveau/nouvelle, vieil/vieille, dresseur/dresseuse, celui/celle...).
+# Syntaxe : {M:masc|F:fem} -> resolu vers 'masc' ou 'fem' selon le joueur.
+# Compatible avec les balises normales : {M:il|F:elle} etc.
+FULL_ALT_RE = /\{M:([^|}]*)\|F:([^}]*)\}/
+
 def rejuvfr_apply_gender(text)
   return text unless text.is_a?(String)
-  return text unless text.include?("(")
+  # Pas de resolution si aucun marqueur present -> early return pour perf
+  return text unless text.include?("(") || text.include?("{M:")
   case $genre_fr
   when :F
+    text = text.gsub(FULL_ALT_RE, '\2')
     text.gsub(GENDER_MARKER_RE) do |m|
       suf = $1
       GENDER_SUFFIXES.include?(suf.downcase) ? suf : m
     end
   when :M, nil
+    text = text.gsub(FULL_ALT_RE, '\1')
     text.gsub(GENDER_MARKER_RE) do |m|
       GENDER_SUFFIXES.include?($1.downcase) ? "" : m
     end

@@ -4,7 +4,7 @@ Traduction française non-officielle de **Pokémon Rejuvenation 14.0.6**.
 
 ## Téléchargement
 
-Dernière version : [**RejuvFR_v1.1.17.zip**](https://github.com/bss3m/RejuvFR/releases/latest) (~6 Mo)
+Dernière version : [**RejuvFR_v1.1.18.zip**](https://github.com/bss3m/RejuvFR/releases/latest) (~6 Mo)
 
 ## Installation
 

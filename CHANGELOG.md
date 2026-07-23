@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.1.18 (2026-07-23)
+
+* **Nouveau : syntaxe `{M:x|F:y}` pour l'alternation mot-plein** dans le résolveur de genre (`patch/Mods/french_gender.rb`). Complémente le marqueur suffixe existant `(e)` pour les cas où le féminin n'est pas juste un suffixe : `nouveau/nouvelle`, `vieil/vieille`, `dresseur/dresseuse`, `celui/celle`, `il/elle`, `lui/elle`, `le/la`. Le résolveur remplace `{M:foo|F:bar}` par `foo` (joueur masculin) ou `bar` (joueur féminin).
+* Fix genres dans Blacksteeple : **15 alternations `word/word`** converties vers `{M:|F:}` dans Map303, Map438, Map440, Map443. Exemples :
+  * « un(e) nouveau/nouvelle ami(e) » → « un(e) {M:nouveau|F:nouvelle} ami(e) »
+  * « un(e) dresseur/dresseuse extraordinaire » → « un(e) {M:dresseur|F:dresseuse} extraordinaire »
+  * « Celui/Celle dont j'ai tant entendu parler » → « {M:Celui|F:Celle} dont j'ai tant entendu parler »
+* Fix ponctuation dans le Château de Blacksteeple et zones connexes (11 cartes : 14, 128, 303, 435, 436, 437, 438, 440, 443, 457, 461) : **219 corrections** au total.
+  * **190 ellipses** collées au mot suivant → espace ajouté : « MELIA : ...Melanie » → « MELIA : ... Melanie », « Ah...Non » → « Ah... Non ».
+  * **17 variables `\PN.`** collées à un mot majuscule → espace ajouté : « incroyable, \\PN.La façon » → « incroyable, \\PN. La façon ».
+  * **11 abbréviations** type `S.S.Oceana` → `S.S. Oceana` (espace après le second point).
+  * **1 double espace** normalisé.
+
 ## v1.1.17 (2026-07-23)
 
 **Fix critique : crash du menu Quête sur Chapter 11 (12, 15) en FR.**
