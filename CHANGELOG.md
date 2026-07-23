@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.20 (2026-07-23)
+
+* Fix du fallback introduit en v1.1.19 : le monkey-patch ciblait `MessageTypes.singleton_class` mais accédait à `@messages` comme variable d'instance sur le module, ce qui retournait toujours `nil`. Résultat : le fallback ne s'activait jamais et les traductions dans un mapid ≠ courant restaient invisibles.
+* Fix : on hook maintenant la classe `Messages` directement (ses méthodes d'instance `getFromHash` et `getFromMapHash`), où `@messages` est directement accessible. Le fallback fonctionne enfin. Cas confirmé de nouveau : « But for this first visit, let's go on together. » (Map388).
+
 ## v1.1.19 (2026-07-23)
 
 **Fix massif : fallback global de lookup de traduction.**

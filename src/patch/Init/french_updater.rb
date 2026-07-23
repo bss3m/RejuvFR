@@ -12,7 +12,7 @@
 # Le staging dans un dossier temporaire evite les locks fichiers qui
 # empechent d'ecraser messages_fr.dat pendant l'execution.
 
-REJUVFR_VERSION = "1.1.19"
+REJUVFR_VERSION = "1.1.20"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
