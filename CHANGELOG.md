@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.23 (2026-07-24)
+
+* Fix RiftDex qui restait en anglais même avec les fallbacks des v1.1.19-v1.1.21.
+* **Cause identifiée** : `Scripts/Rejuv/RiftDex.rb` définit `RIFTDATA = { :RIFTFERROTHORN => { :name => _INTL("Code: Drifio"), :desc => _INTL("..."), ... } }` au CHARGEMENT du script Ruby. À ce moment `messages_fr.dat` n'est pas encore chargé — les `_INTL()` retournent l'input tel quel (anglais) et cette valeur est FIGÉE dans le hash. Le RiftDex UI lit ensuite ce hash directement, sans repasser par `_INTL` → aucun lookup runtime → notre fallback ne peut rien faire.
+* **Fix** : nouveau `patch/Mods/french_riftdex_retranslate.rb`. Après chargement de `messages_fr.dat`, on parcourt `RIFTDATA` et on re-run `_INTL` sur chaque `:name` / `:desc` / `:notes`. Un snapshot des originaux est conservé dans `$_rejuvfr_riftdex_original` pour permettre de retraduire proprement au changement de langue (FR ↔ EN). Se déclenche au boot ET à chaque `pbLoadLanguage`.
+* Ce pattern (constante Hash construite au load-time avec `_INTL` inlined) n'apparaît que dans RiftDex.rb dans le codebase Rejuv 14. Les autres textes hardcodés (Definitions/*.rb) stockent des strings plaines et sont routés par `_INTL` au moment de l'affichage → couverts par le fallback existant.
+
 ## v1.1.22 (2026-07-24)
 
 **Hardening général après review complète des 7 fichiers Ruby du mod.**
