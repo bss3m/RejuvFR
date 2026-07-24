@@ -1,5 +1,44 @@
 # Changelog
 
+## v1.1.25 (2026-07-24)
+
+**Bulk fixes issus d'une code review multi-agents des traductions (16 reviewers × 3 skeptics/finding, 413 findings recovered). 638 corrections appliquées sur 300+ fichiers.**
+
+### Caractères interdits (police rétro)
+
+* **60 ligatures `œ`/`Œ` remplacées par `oe`/`Oe`** dans 52 fichiers. Ces caractères n'existent pas dans `PKMN RBYGSC.ttf` et s'affichaient comme carrés vides sur les 9 ATEBITMAPS (mais les autres cartes ne posaient pas problème visuel — c'était surtout un risque futur si les MAPS changent leur switch AtebitDesire). Exemples : `cœur` → `coeur`, `sœur` → `soeur`, `œuvre` → `oeuvre`, `œuf` → `oeuf`. Cas concrets : `s'écœurer` dans Battle Tower speech, `Sœur de Lune Perdue` dans ScriptTexts UI, `Écaille Cœur` dans les items PNJ Nature-change (Map388, Map660).
+
+### Accents manquants — Items
+
+* **28 accents restaurés dans Items.json + ItemPlurals.json** : bloc de clefs (item Keys) où les accents avaient été systématiquement dépouillés. `Cle` → **Clé** (×13), `Piece` → **Pièce** (×8), `Hotel` → **Hôtel**, `Embleme` → **Emblème** (bloc résiduel), `Magnetique` → **Magnétique**, `Regulateur` → **Régulateur**, `Chargee` → **Chargée**, `Etoile` → **Étoile**.
+
+### Marqueurs de genre — slashes non résolus
+
+* **211 alternances `word/word` converties en `{M:|F:}`** dans 87 fichiers. Le syntaxe `{M:|F:}` a été introduite en v1.1.18 mais seulement appliquée aux maps Blacksteeple. Ce pass global couvre tout le reste du jeu.
+  * 69× `le/la` → `{M:le|F:la}`
+  * 34× `il/elle` (minuscule) + 33× `Il/Elle` (majuscule)
+  * 23× `Le/La`, 15× `nouveau/nouvelle`, 15× `lui/elle`
+  * 13× `Dresseur/Dresseuse`, 7× `celui/celle`, 5× `dresseur/dresseuse` (mixte case)
+  * `mon/ma`, `ton/ta`, `son/sa`, `ils/elles`, `Celui/Celle`, `Ils/Elles`, autres
+
+### Noms Pokémon EN dans dialogues
+
+* **70 corrections nom Pokémon EN → FR canon** :
+  * **Braixen → Roussil** : 34 occurrences dans Map052 (ISHA parle du Roussil putride), Map057, et autres dialogues Lavender/Melia
+  * **Espurr → Psystigri** : 36 occurrences dans Map095 (arc bonding/glace d'Espurr) et environ 20 lignes de dialogue
+
+### Ponctuation systémique — `\PN.`
+
+* **269 occurrences de `\PN.CapitaleSuivante` corrigées en `\PN. Capitale`** dans 148 fichiers. Le pattern était : nom du joueur en fin de phrase, période, puis mot suivant collé sans espace. Rendait `TenchDis-moi` au lieu de `Tench. Dis-moi`. Le fix Blacksteeple de v1.1.18 (17 occurrences) était la partie visible d'un iceberg beaucoup plus large.
+
+### Non touché (nécessitent review manuelle par cas)
+
+* ~85 findings n'ont pas eu leur adversarial verify (workflow hit le cap 1000 agents avant complétion)
+* Fragments anglais isolés dans dialogues corrompus intentionnellement (Map053 glitched text, Map580 dev note de Jan)
+* Certaines lignes English left-over dans Map175 (SHARON quote)
+* Gender markers dans FieldMessages nécessitent inspection par contexte battle
+* Style/register issues dans les Pokédex entries (à traiter en batch séparé)
+
 ## v1.1.24 (2026-07-24)
 
 **Fix massif issu d'une code review multi-agents adversariale (28 findings confirmés, 15 distincts après merge). 10 fixes appliqués dans cette release, 5 différés.**

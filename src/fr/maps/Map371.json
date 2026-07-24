@@ -3,7 +3,7 @@
   "OSHAWOTT: Osha...": "OSHAWOTT: Osha...",
   "No thanks...": "Non merci...",
   "GRUNT: What? Get outta here kiddo, this place isn't a tourist spot.": "SBIRE : Quoi ? Dégage d'ici, gamin(e), c'est pas un lieu touristique ici.",
-  "GRUNT: Isn't every day that we see a newbie around here.": "SBIRE : C'est pas tous les jours qu'on voit un(e) nouveau/nouvelle dans le coin.",
+  "GRUNT: Isn't every day that we see a newbie around here.": "SBIRE : C'est pas tous les jours qu'on voit un(e) {M:nouveau|F:nouvelle} dans le coin.",
   "Say, wanna join us?": "Dis, ça te dirait de nous rejoindre ?",
   "GRUNT: Hah, they actually thought I was being serious!": "SBIRE : Ha, iel a vraiment cru que j'étais sérieux !",
   "GRUNT: This ship is Bladestar property, kid. Get lost.": "SBIRE : Ce navire est la propriété de Bladestar, gamin(e).Dégage.",

@@ -53,7 +53,7 @@
   "\"Exotic Berries!\"": "\"Baies Exotiques !\"",
   "\"Powerful Gems!\"": "\"Gemmes Puissantes !\"",
   "RECEPTIONIST: Hello! Is this your first time here?": "RECEPTIONIST: Bonjour ! C'est votre première fois ici ?",
-  "RECEPTIONIST: Yep, you must be new. I've never seen your face before!": "RECEPTIONIST: Oui, vous devez être nouveau/nouvelle. Je n'avais jamais vu votre visage !",
+  "RECEPTIONIST: Yep, you must be new. I've never seen your face before!": "RECEPTIONIST: Oui, vous devez être {M:nouveau|F:nouvelle}. Je n'avais jamais vu votre visage !",
   "Are you aware with how our store works?": "Êtes-vous au courant du fonctionnement de notre boutique ?",
   "The more stamps you have, the more floors you can access!": "Plus vous avez de tampons, plus vous pouvez accéder à d'étages !",
   "Here, I'll give you one stamp for entering for the first time!": "Tenez, je vous donne un tampon pour être entré(e) pour la première fois !",

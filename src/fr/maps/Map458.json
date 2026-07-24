@@ -65,7 +65,7 @@
   "ANA: \\PN?!": "ANA: \\PN ?!",
   "ANA: What happened?!": "ANA: Qu'est-ce qui s'est passé ?!",
   "SIENNA: Oh...? This is quite peculiar...": "SIENNA: Oh... ? C'est bien particulier...",
-  "Did \\PN react to the bell?": "\\PN a-t-il/elle réagi à la cloche ?",
+  "Did \\PN react to the bell?": "\\PN a-t-{M:il|F:elle} réagi à la cloche ?",
   "ANA: Oh gosh... I don't... We have to get \\PN some help.": "ANA: Oh mon Dieu...Je ne...Il faut trouver de l'aide pour \\PN.",
   "???: Not so fast!": "???: Pas si vite !",
   "GRUNT: Hah! I told you it was a good idea to wait it out!": "GRUNT: Ha ! Je t'avais dit que c'était une bonne idée d'attendre !",

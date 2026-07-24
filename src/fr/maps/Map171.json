@@ -128,7 +128,7 @@
   "HOLLY: Very well! Please make sure you're ready to end the festival.": "HOLLY: Très bien ! Assurez-vous d'être prêts à clore le festival.",
   "Fried Krabby is a delicacy here on Terajuma Island.": "Les Krabby frits sont une spécialité ici sur l'île Terajuma.",
   "Don't give up your chance to try them!": "Ne ratez pas l'occasion d'en goûter !",
-  "AELITA: You must be the musician that's gonna play for us soon!": "AELITA: Tu dois être le/la musicien(ne) qui va jouer pour nous bientôt !",
+  "AELITA: You must be the musician that's gonna play for us soon!": "AELITA: Tu dois être {M:le|F:la} musicien(ne) qui va jouer pour nous bientôt !",
   "VENAM: That's right, you're lookin' at the most famous artist in all of Aev-": "VENAM: Exactement, vous avez devant vous l'artiste la plus célèbre de tout Aev-",
   "MELIA: ...Venam?!": "MELIA: ...Venam ?!",
   "\\sh\\c[7]VENAM: HOLY SHIT!": "\\sh\\c[7]VENAM: PUTAIN DE MERDE !",

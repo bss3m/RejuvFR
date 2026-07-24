@@ -483,7 +483,7 @@
   "MOSELY: I'm just bein' me. No biggie. Anyway this computer did NOT have any computer games.": "MOSELY : J'suis juste moi-même. C'est rien. Bref, y avait AUCUN jeu sur cet ordinateur.",
   "EIZEN: The Poké Ball itself isn't the inconsistency, but I am.": "EIZEN : Ce n'est pas la Poké Ball elle-même l'incohérence, c'est moi.",
   "You have been here since Version \\v[742].": "Tu es ici depuis la Version \\v[742].",
-  "Which means that given how new you are to this world, you reasonably should not know that which you do about Akora Shore.": "Ce qui signifie qu'étant si nouveau/nouvelle dans ce monde, tu ne devrais raisonnablement pas savoir ce que tu sais sur Akora Shore.",
+  "Which means that given how new you are to this world, you reasonably should not know that which you do about Akora Shore.": "Ce qui signifie qu'étant si {M:nouveau|F:nouvelle} dans ce monde, tu ne devrais raisonnablement pas savoir ce que tu sais sur Akora Shore.",
   "Yet, you answered my questions correctly. How did you come by this knowledge?": "Et pourtant, tu as répondu correctement à mes questions. Comment as-tu obtenu ces informations ?",
   "Are you perhaps also aware that I used to not be here on older versions of this expedition?": "Sais-tu peut-être aussi que je n'étais pas présent dans les anciennes versions de cette expédition ?",
   "Furthermore, you even seemed to know of my existence before we even met properly.": "De plus, tu semblais même connaître mon existence avant même que nous nous rencontrions vraiment.",

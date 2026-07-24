@@ -76,7 +76,7 @@
   "???: Juuguüüüü!": "??? : Juuguüüüü !",
   "SABINE: It seems to be toying with us...": "SABINE: On dirait qu'il joue avec nous...",
   "HORACE: Allow me...": "HORACE: Permettez-moi...",
-  "SABINE: Yeah, perhaps \\PN is the best one suited to handle this one, Horace.": "SABINE: Ouais, peut-être que \\PN est le/la plus apte à gérer celui-ci, Horace.",
+  "SABINE: Yeah, perhaps \\PN is the best one suited to handle this one, Horace.": "SABINE: Ouais, peut-être que \\PN est {M:le|F:la} plus apte à gérer celui-ci, Horace.",
   "HORACE: Hrm...": "HORACE: Hrm...",
   "As long as the beast is quelled, I have no objection.": "Tant que la bête est maîtrisée, je n'ai aucune objection.",
   "HORACE: \"Wait\"? You wish to capture it?": "HORACE: \"Attendre\" ? Vous souhaitez le capturer ?",

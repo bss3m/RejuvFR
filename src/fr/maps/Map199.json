@@ -67,7 +67,7 @@
   "Strange, right?": "Étrange, non ?",
   "I don't know why those Kecleon know how to speak, but it's cool!": "Je ne sais pas pourquoi ces Kecleon savent parler, mais c'est cool !",
   "JEFF: Jeez Henrietta, give me a break...": "JEFF: Bon sang Henrietta, laisse-moi souffler...",
-  "HENRIETTA: Stop! You're a new trainer, right? Is that right?": "HENRIETTA: Stop ! Tu es un(e) nouveau/nouvelle dresseur/dresseuse, c'est ça ?",
+  "HENRIETTA: Stop! You're a new trainer, right? Is that right?": "HENRIETTA: Stop ! Tu es un(e) {M:nouveau|F:nouvelle} {M:dresseur|F:dresseuse}, c'est ça ?",
   "How would you like to be part of our new program called \"Trainer Tracker\"?": "Ça te dirait de participer à notre nouveau programme appelé \"Tracker de Dresseurs\" ?",
   "All we gotta do is battle. Simple, yeh?": "On a juste à se battre. Simple, non ?",
   "Then how 'bout it? C'mon, it'll be fun!": "Alors, c'est parti ? Allez, ça va être fun !",

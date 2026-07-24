@@ -36,7 +36,7 @@
   "VENAM: \\PN, we don't have to entertain this thing.": "VENAM: \\PN, on n'est pas obligés d'écouter ce truc.",
   "REN: Yeah, this place is falling apart. It could come down on us at any moment.": "REN: Ouais, cet endroit s'effondre. Ça peut nous tomber dessus à tout moment.",
   "GIUSEPPE: To be honest, I have no idea who da rest of you are, but dis is a conversation between \\PN and I.": "GIUSEPPE: Pour êt' franc, j'sais pas qui vous êtes, mais c't'e conversation, c'est entre \\PN et moi.",
-  "So it's up to dem if dey wanna stick around and converse like adults.": "Alors c'est à lui/elle de décider s'il/elle veut rester et discuter comme un adulte.",
+  "So it's up to dem if dey wanna stick around and converse like adults.": "Alors c'est à {M:lui|F:elle} de décider s'{M:il|F:elle} veut rester et discuter comme un adulte.",
   "Look, I'll even be nice. If you stay, I'll activate dem healing machine thingies and da PC.": "R'gardez, j'vais même êt' sympa. Si vous restez, j'active les machines de soin et l'ordi.",
   "What do ya say??": "Qu'est-ce t'en dis ??",
   "VENAM: Goddamnit.": "VENAM: Bordel.",
