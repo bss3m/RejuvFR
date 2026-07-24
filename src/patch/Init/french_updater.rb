@@ -12,7 +12,7 @@
 # Le staging dans un dossier temporaire evite les locks fichiers qui
 # empechent d'ecraser messages_fr.dat pendant l'execution.
 
-REJUVFR_VERSION = "1.1.23"
+REJUVFR_VERSION = "1.1.24"
 REJUVFR_REPO = "bss3m/RejuvFR"
 REJUVFR_API = "https://api.github.com/repos/#{REJUVFR_REPO}/releases/latest"
 REJUVFR_URL = "https://github.com/#{REJUVFR_REPO}/releases/latest"
@@ -152,37 +152,86 @@ rescue => e
 end
 
 # --- Extraction dans un dossier de staging ---
+#
+# Robustesse :
+# - Rescue LoadError separement (require 'zip' est un ScriptError, pas
+#   catche par rescue StandardError) : evite un crash si rubyzip absent.
+# - Compte les entrees effectivement extraites et refuse false si zero
+#   (protection contre packaging release avec wrapper folder GitHub-style
+#   RejuvFR-<sha>/patch/... qui matcherait rien et laisserait un staging
+#   vide sans erreur).
+# - Detecte + strip un prefixe wrapper commun (ex: 'RejuvFR-main/')
+#   pour tolerer les zips archive GitHub.
+# - Path validation : refuse toute entree resolue hors du staging_dir
+#   (defense en profondeur contre zip slip).
 
 def rejuvfr_extract_to_staging(zip_path, staging_dir)
-  require 'zip'
-  require 'fileutils'
+  begin
+    require 'zip'
+    require 'fileutils'
+  rescue LoadError => e
+    rejuvfr_log("rubyzip unavailable: #{e.class}: #{e.message}")
+    return false
+  end
   FileUtils.rm_rf(staging_dir) if File.exist?(staging_dir)
   FileUtils.mkdir_p(staging_dir)
-  Zip::File.open(zip_path) do |zf|
-    zf.each do |entry|
-      name = entry.name.to_s
-      next if name.empty?
-      next if name.start_with?('__MACOSX', '.git')
-      next unless name.start_with?('patch/', 'patch\\')
-      target = File.join(staging_dir, name.tr('\\', '/'))
-      if entry.directory?
-        FileUtils.mkdir_p(target)
-        next
+  staging_root = File.expand_path(staging_dir)
+  extracted = 0
+  wrapper_prefix = nil
+  begin
+    Zip::File.open(zip_path) do |zf|
+      # 1er pass : detecter un wrapper commun (ex: 'RejuvFR-main/')
+      # Si toutes les entrees non-metadata commencent par 'X/' et aucune
+      # ne commence directement par 'patch/', on strip 'X/'.
+      names = zf.entries.map { |e| e.name.to_s }
+                       .reject { |n| n.empty? || n.start_with?('__MACOSX', '.git') }
+      if names.any? && names.none? { |n| n.start_with?('patch/', 'patch\\') }
+        first_seg = names.first.tr('\\', '/').split('/', 2).first
+        if first_seg && !first_seg.empty? &&
+           names.all? { |n| n.tr('\\', '/').start_with?(first_seg + '/') }
+          wrapper_prefix = first_seg + '/'
+        end
       end
-      dir = File.dirname(target)
-      FileUtils.mkdir_p(dir) if dir && dir != '.'
-      begin
-        zf.extract(entry, target) { true }
-      rescue => e
-        rejuvfr_log("Extract failed on #{name}: #{e.class}: #{e.message}")
-        return false
+      zf.each do |entry|
+        name = entry.name.to_s.tr('\\', '/')
+        next if name.empty?
+        next if name.start_with?('__MACOSX', '.git')
+        # Strip wrapper si detecte
+        if wrapper_prefix && name.start_with?(wrapper_prefix)
+          name = name[wrapper_prefix.length..]
+        end
+        next unless name.start_with?('patch/')
+        target = File.expand_path(File.join(staging_dir, name))
+        # Defense en profondeur zip-slip
+        unless target == staging_root ||
+               target.start_with?(staging_root + File::SEPARATOR)
+          rejuvfr_log("Refused entry outside staging: #{entry.name}")
+          next
+        end
+        if entry.directory?
+          FileUtils.mkdir_p(target)
+          next
+        end
+        dir = File.dirname(target)
+        FileUtils.mkdir_p(dir) if dir && dir != '.'
+        begin
+          zf.extract(entry, target) { true }
+          extracted += 1
+        rescue => e
+          rejuvfr_log("Extract failed on #{entry.name}: #{e.class}: #{e.message}")
+          return false
+        end
       end
     end
+  rescue => e
+    rejuvfr_log("Zip open/extract failed: #{e.class}: #{e.message}")
+    return false
+  end
+  if extracted == 0
+    rejuvfr_log("Zip extraction produced 0 files (packaging error?)")
+    return false
   end
   true
-rescue => e
-  rejuvfr_log("Extract to staging failed: #{e.class}: #{e.message}")
-  false
 end
 
 # --- Script batch detache ---
@@ -333,16 +382,59 @@ def rejuvfr_prompt_and_apply(info)
     rejuvfr_mark_notified(latest)
     return
   end
-  # Message auto-dismiss (\wtnp[N] = attente N*2 frames sans pression de
-  # touche). Le message informe qu'un telechargement se prepare, se ferme
-  # tout seul, puis fetch/extract commencent (le jeu freeze ~2-3s en
-  # silence, comportement standard).
+  # Telechargement + extraction en tache de fond avec pump de la loop
+  # graphics/input, sinon le main thread bloque jusqu'a 190s (10s connect
+  # + 180s read timeout) et Windows marque la fenetre 'Not responding'
+  # apres ~5s. Le pump laisse la scene tourner et evite le force-kill
+  # utilisateur.
   rejuvfr_safe_message("Téléchargement de la mise à jour...\\wtnp[45]")
-  unless rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
+  download_ok = nil
+  t = Thread.new do
+    begin
+      download_ok = rejuvfr_fetch(info[:zip_url], REJUVFR_ZIP_TMP)
+    rescue => e
+      rejuvfr_log("Fetch thread crashed: #{e.class}: #{e.message}")
+      download_ok = false
+    end
+  end
+  while t.alive?
+    begin
+      Graphics.update
+    rescue
+    end
+    begin
+      Input.update
+    rescue
+    end
+    sleep 0.016
+  end
+  t.join rescue nil
+  unless download_ok
     rejuvfr_safe_message("Le téléchargement a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
     return
   end
-  unless rejuvfr_extract_to_staging(REJUVFR_ZIP_TMP, REJUVFR_STAGING_DIR)
+  extract_ok = nil
+  t = Thread.new do
+    begin
+      extract_ok = rejuvfr_extract_to_staging(REJUVFR_ZIP_TMP, REJUVFR_STAGING_DIR)
+    rescue => e
+      rejuvfr_log("Extract thread crashed: #{e.class}: #{e.message}")
+      extract_ok = false
+    end
+  end
+  while t.alive?
+    begin
+      Graphics.update
+    rescue
+    end
+    begin
+      Input.update
+    rescue
+    end
+    sleep 0.016
+  end
+  t.join rescue nil
+  unless extract_ok
     rejuvfr_safe_message("L'extraction a échoué.\nRendez-vous sur :\n#{REJUVFR_URL}")
     return
   end
@@ -389,7 +481,14 @@ def rejuvfr_prompt_and_apply(info)
         system("nohup sh \"#{sh_abs}\" >/dev/null 2>&1 &")
       end
     end
-    rejuvfr_mark_notified(latest)
+    # IMPORTANT : on ne mark_notified PAS ici.
+    # Si le .bat/.sh echoue silencieusement (WSH desactive par GPO,
+    # AV quarantine, robocopy timeout, install sous Program Files sans
+    # elevation), le jeu relance sur la vieille version. Sans mark, le
+    # prompt refire automatiquement au prochain boot (car
+    # rejuvfr_version_gt?(latest, REJUVFR_VERSION) est toujours vrai).
+    # Sur apply reussi, REJUVFR_VERSION passe a latest et
+    # rejuvfr_version_gt? devient false -> pas de prompt (correct).
     rejuvfr_safe_message("Mise à jour prête !\nLe jeu va se fermer.\nIl se relancera automatiquement dans quelques secondes.")
     begin
       exit!

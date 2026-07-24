@@ -67,9 +67,21 @@ Thread.new do
   begin
     rejuvfr_inject_languages
     pbLoadLanguage if defined?($Settings) && $Settings && $Settings.language
-  rescue
-    # Silencieux : si $Settings pas encore construit, le hook s'appliquera
-    # au prochain appel de pbLoadLanguage lui-meme.
+  rescue NameError
+    # $Settings pas encore construit -> le hook s'appliquera au prochain
+    # appel de pbLoadLanguage lui-meme. Cas benin, on ne log pas.
+  rescue => e
+    # Cas grave : messages_fr.dat corrompu, permission refusee, Marshal
+    # error, encoding issue... On log pour diagnostic au lieu de swallow
+    # silencieusement (sinon le joueur boot en anglais sans indice).
+    begin
+      File.open("patch/.rejuvfr_updater.log", "a") do |f|
+        f.puts "[RejuvFR #{Time.now}] force-reload pbLoadLanguage failed: #{e.class}: #{e.message}"
+        (e.backtrace || []).first(5).each { |line| f.puts "  #{line}" }
+      end
+    rescue
+      # Si meme le log echoue, tant pis.
+    end
   end
 end
 

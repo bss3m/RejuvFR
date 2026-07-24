@@ -77,19 +77,44 @@ Thread.new do
       idx
     end
 
+    # Helper : applique la resolution de genre si le module gender est charge.
+    # Idempotent sur strings sans marqueur, safe a appeler partout.
+    def _rejuvfr_gender_wrap(v)
+      return v unless v.is_a?(String)
+      if Object.private_method_defined?(:rejuvfr_apply_gender) ||
+         Object.method_defined?(:rejuvfr_apply_gender)
+        begin
+          return rejuvfr_apply_gender(v)
+        rescue
+          return v
+        end
+      end
+      v
+    end
+
     # ---- fallback pour getFromMapHash ----
+    #
+    # IMPORTANT : pbGetMessageFromHash et autres callers non-_INTL passent
+    # DIRECTEMENT par ces methodes et bypassent le hook _INTL de
+    # french_gender.rb. On applique donc rejuvfr_apply_gender sur les
+    # resultats pour eviter que des (e) ou {M:|F:} bruts s'affichent dans
+    # les messages de combat / quete.
     unless method_defined?(:_orig_getFromMapHash_frfb)
       alias_method :_orig_getFromMapHash_frfb, :getFromMapHash
       def getFromMapHash(type, key)
         result = _orig_getFromMapHash_frfb(type, key)
-        return result if result != key
+        if result != key
+          return _rejuvfr_gender_wrap(result)
+        end
         return result unless key.is_a?(String) && !key.empty?
         return result unless @messages
         c = _rejuvfr_canon(key)
         return result if c.nil? || c.empty?
         idx = _rejuvfr_ensure_index
         v = idx[c]
-        return v if v.is_a?(String) && !v.empty? && v != key
+        if v.is_a?(String) && !v.empty? && v != key
+          return _rejuvfr_gender_wrap(v)
+        end
         result
       end
     end
@@ -99,14 +124,18 @@ Thread.new do
       alias_method :_orig_getFromHash_frfb, :getFromHash
       def getFromHash(type, key)
         result = _orig_getFromHash_frfb(type, key)
-        return result if result != key
+        if result != key
+          return _rejuvfr_gender_wrap(result)
+        end
         return result unless key.is_a?(String) && !key.empty?
         return result unless @messages
         c = _rejuvfr_canon(key)
         return result if c.nil? || c.empty?
         idx = _rejuvfr_ensure_index
         v = idx[c]
-        return v if v.is_a?(String) && !v.empty? && v != key
+        if v.is_a?(String) && !v.empty? && v != key
+          return _rejuvfr_gender_wrap(v)
+        end
         result
       end
     end

@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.1.24 (2026-07-24)
+
+**Fix massif issu d'une code review multi-agents adversariale (28 findings confirmés, 15 distincts après merge). 10 fixes appliqués dans cette release, 5 différés.**
+
+### Genre (haut impact)
+
+* **pbMessage args swap** (`french_gender.rb:47`) : `Kernel.pbMessage(msg, cmds, default)` passait `default` comme `cmdIfCancel`, pas comme `defaultCmd`. Résultat : un joueur Féminin qui rouvre Options → Langue → Français voit le curseur sur Masculin (au lieu de Féminin). Un Enter ou B silencieux → `$genre_fr = :M` → tous les accords deviennent masculin dans le jeu entier. Fix : bon ordre positionnel + `cmdIfCancel = -1` détecte le cancel et préserve la préférence existante.
+* **Fallback gender-bypass** (`french_battle_messages.rb`, `french_translation_fallback.rb`) : les fallbacks passaient directement par `MessageTypes.getFromHash` en bypassant le hook `_INTL` de `french_gender.rb`. Résultat : les messages de combat (FieldMessages, OpeningSpeech, EndSpeechLose, quest data via `pbGetMessageFromHash`) affichaient les marqueurs bruts `(e)` et `{M:...|F:...}`. Fix : `rejuvfr_apply_gender` appliqué manuellement sur tous les retours de fallback (idempotent, safe sur strings sans marqueur).
+* **`(s)` dans la whitelist** (`french_gender.rb`) : bare 's' matchait le marqueur pluriel optionnel `cran(s)`, `point(s)`, `seconde(s)`. Joueur Masculin voyait ces suffixes supprimés → singulier cassé. Fix : 's' retiré de `GENDER_SUFFIXES`.
+* **Boot prompt manquant** (`french_gender.rb`) : un joueur installant le mod sur un save existant en FR (sans `french_gender.dat`) ne voyait jamais le prompt → `$genre_fr = nil` → forcé masculin. Fix : au boot, si FR est déjà sélectionné mais aucune préférence de genre n'existe, prompt affiché après 1.5s.
+* **`pbDisplayTrainerMessage` hook** (`french_battle_messages.rb`) : Rejuv substitue `\PN` par le nom du joueur AVANT `pbDisplayAutoPaused`. Le hook sur ce dernier voyait `"You beat me Alice!"` au lieu du template `"You beat me \PN!"` → lookup miss → anglais. Fix : hook direct sur `pbDisplayTrainerMessage` traduit le template brut.
+
+### Updater (fragilité)
+
+* **`mark_notified` prématuré** (`french_updater.rb`) : `rejuvfr_mark_notified(latest)` était appelé AVANT `exit!`, avant vérification que le `.bat`/`.sh` a appliqué. Si l'apply échouait silencieusement (GPO WSH désactivé, AV, robocopy timeout), le jeu relançait sur la vieille version, cache marquait `latest` → **plus jamais de prompt jusqu'à la prochaine release**. Fix : `mark_notified` retiré du chemin d'acceptation. Sur apply échoué, `REJUVFR_VERSION` reste ancienne → prompt refire au prochain boot.
+* **Empty extract silencieux** (`french_updater.rb`) : le filtre `next unless name.start_with?('patch/')` droppait toutes les entrées si la zip avait un wrapper folder (release GitHub-archive style `RejuvFR-<sha>/patch/...`). Retournait `true` avec staging vide → apply no-op → lockout. Fix : détection + strip du wrapper commun, refuse si zéro entrée extraite, + défense zip-slip.
+* **Download bloquant** (`french_updater.rb`) : `rejuvfr_fetch` s'exécutait sur le main thread avec 190s timeout. Windows marquait "Not responding" après ~5s, le joueur force-kill. Fix : téléchargement + extraction dans une `Thread`, pump de `Graphics.update`/`Input.update` toutes les 16 ms.
+* **`LoadError` non catché** (`french_updater.rb`) : `require 'zip'` levait `LoadError` (`<ScriptError`, pas `<StandardError`) → non catché par `rescue => e` → crash après acceptation du prompt. Fix : `rescue LoadError` séparé.
+
+### Logging
+
+* **Bare rescue muet** (`french_translation.rb`) : catch générique swallowait Marshal errors sur `messages_fr.dat` corrompu, permission denied, etc. Le joueur bootait en anglais sans indice. Fix : log dans `patch/.rejuvfr_updater.log` avec class+message+backtrace top5.
+
+### Différé pour v1.1.25+
+
+* Per-save-slot gender (nécessite hooks pbLoadGame + tests)
+* Sync install des hooks (redondant, low ROI)
+* Zip-slip full defense-in-depth (partiel dans fix #4)
+* Semver comparator via `Gem::Version` (aucun impact aujourd'hui)
+
 ## v1.1.23 (2026-07-24)
 
 * Fix RiftDex qui restait en anglais même avec les fallbacks des v1.1.19-v1.1.21.

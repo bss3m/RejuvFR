@@ -45,7 +45,12 @@ def rejuvfr_prompt_gender
     msg = "Bienvenue dans la traduction française !\nQuel est le genre de ton personnage ?"
   end
   default = current == :F ? 1 : 0
-  choice = Kernel.pbMessage(msg, ["Masculin", "Féminin"], default)
+  # pbMessage signature : (message, commands, cmdIfCancel, skin, defaultCmd)
+  # cmdIfCancel = -1 pour detecter B-press / cancel et ne PAS ecraser la
+  # preference existante (bug : sans ca, un cancel silencieux basculait
+  # les joueurs Feminin vers Masculin).
+  choice = Kernel.pbMessage(msg, ["Masculin", "Féminin"], -1, nil, default)
+  return if choice < 0  # cancel : preserve current
   sym = choice == 1 ? :F : :M
   rejuvfr_save_gender(sym)
   $genre_fr = sym
@@ -57,10 +62,14 @@ $genre_fr = rejuvfr_load_gender
 # Liste blanche des suffixes que l'on considere comme des marqueurs de genre.
 # On evite ainsi de manger des balises fonctionnelles comme (SOIN), (Nord),
 # (Kakori), (COPY), (PgUp)... ou des choix d'options entre parentheses.
-# Guard tous les constants contre redefinition
+#
+# NOTE : le 's' bare a ete RETIRE. En francais '(s)' est utilise comme
+# marqueur de pluriel optionnel ('cran(s)', 'point(s)', 'seconde(s)').
+# S'il etait dans la whitelist, un joueur Masculin verrait '(s)' supprime
+# et donc du singulier casse partout.
 unless defined?(GENDER_SUFFIXES)
   GENDER_SUFFIXES = %w[
-    e s se ne le ve te
+    e se ne le ve te
     nne lle tte ère ète ïne
     euse rice trice ière elle
   ].freeze
@@ -147,4 +156,34 @@ Thread.new do
     end
   end
   $VERBOSE = s
+end
+
+# Boot-time prompt : si FR est deja selectionne mais aucune preference genre
+# n'existe encore (nouvelle install, upgrade depuis version pre-genre), on
+# affiche le prompt une seule fois au 1er rendu du menu titre. Sinon le
+# joueur Feminin joue toute la partie en Masculin sans indication qu'un
+# toggle existe.
+
+Thread.new do
+  # Attente que LANGUAGES + $Settings + pbMessage soient prets
+  120.times do
+    ready = defined?(LANGUAGES) && LANGUAGES.is_a?(Hash) && !LANGUAGES.empty? &&
+            defined?($Settings) && $Settings &&
+            $Settings.respond_to?(:language) &&
+            Kernel.respond_to?(:pbMessage)
+    break if ready
+    sleep 0.1
+  end
+  begin
+    return unless defined?(LANGUAGES) && LANGUAGES.is_a?(Hash) &&
+                  defined?($Settings) && $Settings && $Settings.respond_to?(:language)
+    langname = LANGUAGES.keys[$Settings.language]
+    if langname && langname.to_s.downcase.start_with?("franc") && $genre_fr.nil?
+      # Delai supplementaire pour laisser Graphics/Scene demarrer
+      sleep 1.5
+      rejuvfr_prompt_gender rescue nil
+    end
+  rescue
+    # silent : mieux vaut pas de prompt qu'un crash au boot
+  end
 end
